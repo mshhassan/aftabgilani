@@ -1,3 +1,10 @@
+Bhai, woh text is liye likha aa raha tha kyunke code mein condition lagi hui thi ke agar training ki type `"Achievement"` hogi, toh woh automatic us badge ko top par show karega.
+
+Maine aapki requirement ke mutabiq isko completely remove kar diya hai. Ab kisi bhi record par yeh badge ya text show nahi hoga.
+
+Aap apni **`index.html`** file ko is pure clean code se replace kar lijiye, aapka issue solve ho jayega:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -291,20 +298,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .timeline-card.achievement-highlight { border-left: 4px solid #f59e0b; }
-        
-        .badge-achievement {
-            background-color: #fef3c7;
-            color: #d97706;
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
         .training-top {
             display: flex;
             justify-content: space-between;
@@ -348,6 +341,7 @@
 
     <div class="portfolio-container">
         
+        <!-- Search Toolbar Section -->
         <section class="toolbar-filter-section">
             <div class="filter-group">
                 <label for="searchInput">Search Training Record</label>
@@ -375,6 +369,7 @@
             </div>
         </section>
 
+        <!-- Profile Section Banner -->
         <section class="hero-section">
             <div class="profile-layout">
                 <div class="profile-img-container">
@@ -395,6 +390,7 @@
                 </div>
             </div>
             
+            <!-- Toggleable Panel for Education -->
             <div id="profileSection">
                 <div class="education-grid">
                     <div class="education-card">
@@ -436,6 +432,7 @@
             </div>
         </section>
 
+        <!-- Lectures Main Output Container -->
         <section class="timeline-section">
             <div class="section-header">
                 <h2>Lectures Delivered</h2>
@@ -452,10 +449,10 @@
         <div class="footer-credit">Syed Aftab Gilani</div>
     </div>
 
+    <!-- LINKING YOUR EXTERNAL DATA FILE HERE -->
     <script src="data.js"></script>
 
     <script>
-        // Check if data loaded correctly from data.js
         const trainingData = typeof staticTrainingData !== 'undefined' ? staticTrainingData : [];
 
         const searchInput = document.getElementById('searchInput');
@@ -504,10 +501,8 @@
                 noResultsMessage.style.display = 'none';
             }
 
-            // Grouping by active Category
             const groups = {};
             filtered.forEach(item => {
-                // If category visibility is true, group by category name, else group under general bucket
                 const currentCatName = item.showFields.category ? item.category : "Other Recognitions";
                 if (!groups[currentCatName]) {
                     groups[currentCatName] = [];
@@ -519,7 +514,6 @@
                 const groupWrapper = document.createElement('div');
                 groupWrapper.className = 'category-group-wrapper';
 
-                // Only render category banner if category name is active
                 if (categoryName !== "Other Recognitions") {
                     const banner = document.createElement('div');
                     banner.className = 'category-title-banner';
@@ -532,11 +526,8 @@
 
                 groups[categoryName].forEach(item => {
                     const sf = item.showFields;
-                    const isAchievement = sf.type && item.type === 'Achievement';
-                    
                     const folderPath = `training picture/${item.folderName}/`;
 
-                    // Generate images grid ONLY if array has files listed inside data.js
                     let galleryHtml = '';
                     if (item.images && item.images.length > 0) {
                         galleryHtml = `<div class="gallery-grid">`;
@@ -553,8 +544,7 @@
                     const itemHtml = `
                         <div class="timeline-item">
                             <div class="timeline-marker"><div class="marker-dot"></div></div>
-                            <div class="timeline-card ${isAchievement ? 'achievement-highlight' : ''}">
-                                ${isAchievement ? '<span class="badge-achievement">🏆 Highlighted Lecture / Achievement</span>' : ''}
+                            <div class="timeline-card">
                                 <div class="training-top">
                                     <div>
                                         ${sf.title ? `<h3>${item.title}</h3>` : ''}
@@ -564,7 +554,7 @@
                                 </div>
                                 ${item.description ? `<p class="training-description">${item.description}</p>` : ''}
                                 ${galleryHtml}
-                            </div>
+ Felt                    </div>
                         </div>
                     `;
                     timelineWrapper.insertAdjacentHTML('beforeend', itemHtml);
@@ -599,3 +589,5 @@
     </script>
 </body>
 </html>
+
+```
