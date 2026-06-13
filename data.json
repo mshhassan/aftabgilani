@@ -1,0 +1,15 @@
+{
+  "records": [
+    {
+      "id": 1,
+      "title": "Airport Operations and Management",
+      "subtitle": "Foundation University Students",
+      "category": "Air Traffic Management",
+      "type": "Seminar",
+      "date": "2026-06-13",
+      "provider": "Islamabad International Airport",
+      "description": "Shared knowledge on Emerging technologies for safe, secure, and efficient aviation operations with the students.",
+      "image": "images/foundation-uni.jpg"
+    }
+  ]
+}
