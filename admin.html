@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Live Management</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --blue: #2563eb;
+            --blue-hover: #1d4ed8;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 30px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        /* Login Screen */
+        .auth-card { max-width: 450px; margin: 100px auto; background: var(--surface); padding: 35px; border-radius: var(--radius); box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .auth-card h2 { margin-bottom: 8px; font-size: 24px; text-align: center; }
+        .auth-card p { margin-bottom: 24px; font-size: 14px; color: var(--text-muted); text-align: center; }
+        
+        /* Dashboard Content Layout */
+        #dashboardSection { display: none; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--border); }
+        .dashboard-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; }
+        
+        /* Cards & Forms */
+        .card { background: var(--surface); padding: 24px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.01); }
+        .card h3 { margin-bottom: 20px; font-size: 18px; color: var(--text); border-left: 4px solid var(--blue); padding-left: 10px; }
+        .form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: var(--text); }
+        input, select, textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--blue); }
+        
+        /* Buttons */
+        button { background: var(--blue); color: white; padding: 12px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: var(--blue-hover); }
+        .btn-danger { background: var(--danger); padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-secondary { background: var(--text-muted); }
+        .btn-secondary:hover { background: #475569; }
+
+        /* Existing Entries List */
+        .items-list { display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 5px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #f1f5f9; border: 1px solid var(--border); border-radius: 8px; }
+        .item-info h4 { font-size: 14px; margin-bottom: 3px; color: var(--text); }
+        .item-info span { font-size: 12px; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="authSection" class="auth-card">
+            <h2>System Login</h2>
+            <p>Enter your GitHub Personal Access Token to manage data</p>
+            <div class="form-group">
+                <label for="ghToken">GitHub Access Token</label>
+                <input type="password" id="ghToken" placeholder="Paste your token here...">
+            </div>
+            <button onclick="handleLogin()" style="width: 100%; margin-top: 10px;">Verify & Open Dashboard</button>
+        </div>
+
+        <div id="dashboardSection">
+            <div class="header">
+                <div>
+                    <h2>Aftab Gilani Site Management</h2>
+                    <p style="font-size: 13px; color: var(--text-muted);">Direct GitHub Database Synchronization</p>
+                </div>
+                <button class="btn-secondary" onclick="handleLogout()">Secure Logout</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Add New Entry / Event</h3>
+                    <form id="recordForm" onsubmit="saveRecord(event)">
+                        <div class="form-group">
+                            <label for="title">Title / Main Topic *</label>
+                            <input type="text" id="title" required placeholder="e.g., Seminar on Information Security">
+                        </div>
+                        <div class="form-group">
+                            <label for="subtitle">Subtitle / Target Audience</label>
+                            <input type="text" id="subtitle" placeholder="e.g., Department of Computer Science">
+                        </div>
+                        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group">
+                                <label for="type">Type *</label>
+                                <select id="type" required>
+                                    <option value="Seminar">Lecture / Seminar</option>
+                                    <option value="Certificate">Certificate / Achievement</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <input type="text" id="category" placeholder="e.g., Infrastructure">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group">
+                                <label for="date">Date *</label>
+                                <input type="date" id="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="provider">Provider / Location *</label>
+                                <input type="text" id="provider" required placeholder="e.g., Islamabad Airport">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image File Path</label>
+                            <input type="text" id="image" placeholder="e.g., images/event1.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Detailed Description *</label>
+                            <textarea id="description" rows="4" required placeholder="Provide brief summary or key takeaways..."></textarea>
+                        </div>
+                        <button type="submit" style="width: 100%; margin-top: 10px;">Publish Live to Website</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>Current Database Entries</h3>
+                    <div id="itemsContainer" class="items-list">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration Parameters
+        const OWNER = "mshhassan";
+        const REPO = "aftabgilani";
+        const FILE_PATH = "data.json";
+        
+        let GITHUB_TOKEN = "";
+        let databaseData = { records: [] };
+        let fileSHA = "";
+
+        // Auto-login verify if token exists in storage
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('admin_token');
+            if(savedToken) {
+                GITHUB_TOKEN = savedToken;
+                initDashboard();
+            }
+        });
+
+        function handleLogin() {
+            const tokenInput = document.getElementById('ghToken').value.trim();
+            if(!tokenInput) return alert("Please enter a valid token.");
+            
+            GITHUB_TOKEN = tokenInput;
+            localStorage.setItem('admin_token', tokenInput);
+            initDashboard();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('admin_token');
+            location.reload();
+        }
+
+        // Connect and Fetch existing data from GitHub Repository
+        async function initDashboard() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+
+                if(!response.ok) throw new Error("Connection failed. Check Token scope or permissions.");
+
+                const fileInfo = await response.json();
+                fileSHA = fileInfo.sha; // Capture SHA hash required for future modifications
+                
+                // Decode base64 package returned from GitHub API
+                const rawContent = decodeURIComponent(escape(atob(fileInfo.content)));
+                databaseData = JSON.parse(rawContent);
+
+                // View Toggle Switching
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+
+                renderAdminItems();
+            } catch (err) {
+                alert("GitHub Authentication Error: " + err.message);
+                handleLogout();
+            }
+        }
+
+        // Render data inside the list container
+        function renderAdminItems() {
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = '';
+            
+            if(!databaseData.records || databaseData.records.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding:20px;">No records found in database.</p>`;
+                return;
+            }
+
+            // Reverse sort to show latest entries first
+            const sortedList = [...databaseData.records].reverse();
+
+            sortedList.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <div class="item-info">
+                        <h4>${item.title}</h4>
+                        <span>${item.date} | ${item.type}</span>
+                    </div>
+                    <button class="btn-danger" onclick="deleteItem(${item.id})">Delete</button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Form Submit handler to insert data payload
+        async function saveRecord(e) {
+            e.preventDefault();
+            
+            const newRecord = {
+                id: Date.now(), // Generate unique numeric ID based on timestamp
+                title: document.getElementById('title').value.trim(),
+                subtitle: document.getElementById('subtitle').value.trim(),
+                category: document.getElementById('category').value.trim(),
+                type: document.getElementById('type').value,
+                date: document.getElementById('date').value,
+                provider: document.getElementById('provider').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                image: document.getElementById('image').value.trim() || null
+            };
+
+            if(!databaseData.records) databaseData.records = [];
+            databaseData.records.push(newRecord);
+            
+            await pushUpdateToGitHub("Added Entry: " + newRecord.title);
+            document.getElementById('recordForm').reset();
+        }
+
+        // Delete structural function execution
+        async function deleteItem(id) {
+            if(!confirm("Are you sure you want to permanently remove this record?")) return;
+            
+            databaseData.records = databaseData.records.filter(item => item.id !== id);
+            await pushUpdateToGitHub("Deleted Record ID: " + id);
+        }
+
+        // API Wrapper to Commit state onto GitHub Storage File
+        async function pushUpdateToGitHub(commitMessage) {
+            const jsonString = JSON.stringify(databaseData, null, 2);
+            // Multi-byte safe standard Base64 encoding handler
+            const base64Payload = btoa(unescape(encodeURIComponent(jsonString)));
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: commitMessage,
+                        content: base64Payload,
+                        sha: fileSHA
+                    })
+                });
+
+                if(response.ok) {
+                    const resData = await response.json();
+                    fileSHA = resData.content.sha; // Sync internal SHA pointer reference
+                    alert("Database successfully updated on GitHub!");
+                    renderAdminItems();
+                } else {
+                    throw new Error("Unable to overwrite repository content state.");
+                }
+            } catch(err) {
+                alert("Sync Failure: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
