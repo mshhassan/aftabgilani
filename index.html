@@ -356,11 +356,12 @@
         function getActiveDataset() {
             if (currentModuleId === "profile") return profileData;
             const section = PortfolioConfig.sections.find(s => s.id === currentModuleId);
-            return window[section.dataRef] || [];
+            return (section && window[section.dataRef]) ? window[section.dataRef] : [];
         }
 
         function buildNavigation() {
             const tabsContainer = document.getElementById('moduleTabs');
+            if (!tabsContainer) return;
             tabsContainer.innerHTML = '';
             PortfolioConfig.sections.forEach((sec) => {
                 const btn = document.createElement('button');
@@ -374,14 +375,20 @@
         function switchModule(moduleId) {
             currentModuleId = moduleId;
             buildNavigation();
-            document.getElementById('keywordSearch').value = '';
+            
+            const keywordInput = document.getElementById('keywordSearch');
+            const catFilter = document.getElementById('dynamicCatFilter');
+            if (keywordInput) keywordInput.value = '';
+            if (catFilter) catFilter.value = '';
             
             const filterPanel = document.getElementById('filterPanel');
-            if (currentModuleId === "profile") {
-                filterPanel.style.display = 'none';
-            } else {
-                filterPanel.style.display = 'grid';
-                repopulateFilters();
+            if (filterPanel) {
+                if (currentModuleId === "profile") {
+                    filterPanel.style.display = 'none';
+                } else {
+                    filterPanel.style.display = 'grid';
+                    repopulateFilters();
+                }
             }
             renderEngine();
         }
@@ -390,6 +397,7 @@
             const data = getActiveDataset();
             const wrapper = document.getElementById('catFilterWrapper');
             const select = document.getElementById('dynamicCatFilter');
+            if (!select || !wrapper) return;
             
             const standardHasCategory = data.some(item => item.category);
             
@@ -414,10 +422,16 @@
         function renderEngine() {
             const data = getActiveDataset();
             const activeSectionMeta = PortfolioConfig.sections.find(s => s.id === currentModuleId);
-            document.getElementById('sectionTitle').textContent = activeSectionMeta.title;
+            const sectionTitleEl = document.getElementById('sectionTitle');
+            if (sectionTitleEl && activeSectionMeta) {
+                sectionTitleEl.textContent = activeSectionMeta.title;
+            }
 
-            const searchVal = document.getElementById('keywordSearch').value.toLowerCase().trim();
-            const selectCat = document.getElementById('dynamicCatFilter').value;
+            const keywordInput = document.getElementById('keywordSearch');
+            const catFilter = document.getElementById('dynamicCatFilter');
+            
+            const searchVal = keywordInput ? keywordInput.value.toLowerCase().trim() : '';
+            const selectCat = catFilter ? catFilter.value : '';
 
             const filtered = data.filter(item => {
                 const matchCat = !selectCat || item.category === selectCat;
@@ -430,6 +444,7 @@
             });
 
             const viewport = document.getElementById('renderViewport');
+            if (!viewport) return;
             viewport.innerHTML = '';
 
             if (filtered.length === 0) {
@@ -491,12 +506,21 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             buildNavigation();
-            const filterPanel = document.getElementById('filterPanel');
-            filterPanel.style.display = 'none';
+            
+            if (currentModuleId !== "profile") {
+                repopulateFilters();
+            } else {
+                const filterPanel = document.getElementById('filterPanel');
+                if (filterPanel) filterPanel.style.display = 'none';
+            }
+            
             renderEngine();
 
-            document.getElementById('keywordSearch').addEventListener('input', renderEngine);
-            document.getElementById('dynamicCatFilter').addEventListener('change', renderEngine);
+            const keywordSearchEl = document.getElementById('keywordSearch');
+            const dynamicCatFilterEl = document.getElementById('dynamicCatFilter');
+            
+            if (keywordSearchEl) keywordSearchEl.addEventListener('input', renderEngine);
+            if (dynamicCatFilterEl) dynamicCatFilterEl.addEventListener('change', renderEngine);
         });
     </script>
 </body>
