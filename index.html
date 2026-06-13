@@ -169,13 +169,6 @@
             color: #f1f5f9;
         }
 
-        .bio-box p {
-            margin-bottom: 12px;
-        }
-        .bio-box p:last-child {
-            margin-bottom: 0;
-        }
-
         .quote-box {
             font-style: italic;
             color: #fde047;
@@ -406,6 +399,15 @@
         .training-description {
             font-size: 0.95rem;
             color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        /* Dynamic Image Gallery Grid inside Timeline Card */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .no-results {
@@ -552,7 +554,7 @@
     </div>
 
     <script>
-        // Static Dataset - Hata diya database call engine ko
+        // Static Dataset with Dynamic Folder Asset Mapping
         const staticTrainingData = [
             {
                 title: "1. Applications of AI, Robotics and Disruptive Technologies in Aviation Industry",
@@ -560,7 +562,9 @@
                 category: "AI and Digital Transformation in Aviation Industry",
                 date: "Mar 6, 2024",
                 type: "Achievement",
-                description: "Delivered keynote lecture detailing modern enterprise integration of automated robotic assistance, predictive analytics for flow control, and next-generation safety architectures inside modern hub operation spaces."
+                description: "Delivered keynote lecture detailing modern enterprise integration of automated robotic assistance, predictive analytics for flow control, and next-generation safety architectures inside modern hub operation spaces.",
+                // Aap images ke file names is array mein likh sakte hain
+                images: ["image1.jpg", "image2.jpg"] 
             },
             {
                 title: "2. Strategic Airport Infrastructure and Operational Resilience",
@@ -568,7 +572,8 @@
                 category: "Airport Management & Infrastructure",
                 date: "Nov 12, 2023",
                 type: "Seminar",
-                description: "Session covering risk mitigation strategy, business continuity frameworks, and system scaling paradigms during heavy traffic scenarios."
+                description: "Session covering risk mitigation strategy, business continuity frameworks, and system scaling paradigms during heavy traffic scenarios.",
+                images: []
             },
             {
                 title: "3. Public Policy Frameworks in Modern Civil Aviation",
@@ -576,11 +581,11 @@
                 category: "Aviation Policy & Governance",
                 date: "Jul 18, 2023",
                 type: "Certificate",
-                description: "An intensive overview regarding regulatory alignment, multi-stakeholder policy formulation, and safety governance benchmarks."
+                description: "An intensive overview regarding regulatory alignment, multi-stakeholder policy formulation, and safety governance benchmarks.",
+                images: []
             }
         ];
 
-        // Element Elements Hooks
         const searchInput = document.getElementById('searchInput');
         const categoryFilter = document.getElementById('categoryFilter');
         const typeFilter = document.getElementById('typeFilter');
@@ -591,7 +596,6 @@
         const profileSection = document.getElementById('profileSection');
         const searchGoBtn = document.getElementById('searchGoBtn');
 
-        // Categories Dropdown Setup
         function populateCategories() {
             const categories = [...new Set(staticTrainingData.map(item => item.category).filter(Boolean))].sort();
             categories.forEach(cat => {
@@ -602,13 +606,11 @@
             });
         }
 
-        // Render Dynamic Layout Groups match with image attachment
         function filterAndRenderUI() {
             const searchVal = searchInput.value.toLowerCase().trim();
             const selectedCat = categoryFilter.value;
             const selectedType = typeFilter.value;
 
-            // Filter logic
             const filtered = staticTrainingData.filter(item => {
                 const matchesSearch = !searchVal || 
                     item.title.toLowerCase().includes(searchVal) || 
@@ -620,7 +622,6 @@
                 return matchesSearch && matchesCat && matchesType;
             });
 
-            // Container reset
             recordsContainer.innerHTML = '';
 
             if (filtered.length === 0) {
@@ -630,7 +631,6 @@
                 noResultsMessage.style.display = 'none';
             }
 
-            // Group filtered items by category to build headers like attachment image
             const groups = {};
             filtered.forEach(item => {
                 if (!groups[item.category]) {
@@ -639,23 +639,37 @@
                 groups[item.category].push(item);
             });
 
-            // Build layout
             for (const categoryName in groups) {
                 const groupWrapper = document.createElement('div');
                 groupWrapper.className = 'category-group-wrapper';
 
-                // Blue Category Banner Title Header
                 const banner = document.createElement('div');
                 banner.className = 'category-title-banner';
                 banner.textContent = categoryName;
                 groupWrapper.appendChild(banner);
 
-                // Timeline structure
                 const timelineWrapper = document.createElement('div');
                 timelineWrapper.className = 'timeline-wrapper';
 
                 groups[categoryName].forEach(item => {
                     const isAchievement = item.type === 'Achievement';
+                    
+                    // Folder structure generator path template: "training picture/Date - Title/filename"
+                    const folderPath = `training picture/${item.date} - ${item.title}/`;
+
+                    let galleryHtml = '';
+                    if (item.images && item.images.length > 0) {
+                        galleryHtml = `<div class="gallery-grid">`;
+                        item.images.forEach(imgName => {
+                            galleryHtml += `
+                                <div class="gallery-card">
+                                    <img src="${folderPath}${imgName}" alt="Training Artifact" onerror="this.parentNode.style.display='none'">
+                                </div>
+                            `;
+                        });
+                        galleryHtml += `</div>`;
+                    }
+
                     const itemHtml = `
                         <div class="timeline-item">
                             <div class="timeline-marker"><div class="marker-dot"></div></div>
@@ -669,6 +683,7 @@
                                     <div class="training-date">${item.date}</div>
                                 </div>
                                 <p class="training-description">${item.description}</p>
+                                ${galleryHtml}
                             </div>
                         </div>
                     `;
@@ -680,18 +695,15 @@
             }
         }
 
-        // Event Listeners setup
         function initApp() {
             populateCategories();
             filterAndRenderUI();
 
-            // Real-time input search filters
             searchInput.addEventListener('input', filterAndRenderUI);
             categoryFilter.addEventListener('change', filterAndRenderUI);
             typeFilter.addEventListener('change', filterAndRenderUI);
             searchGoBtn.addEventListener('click', filterAndRenderUI);
 
-            // Hide/Show Toggle Action Buttons
             showMoreBtn.addEventListener('click', () => {
                 profileSection.style.display = 'block';
                 showMoreBtn.style.display = 'none';
