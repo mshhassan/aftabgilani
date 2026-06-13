@@ -402,7 +402,7 @@
             margin-bottom: 15px;
         }
 
-        /* Dynamic Image Gallery Grid inside Timeline Card */
+        /* Gallery Grid Layout */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -554,7 +554,7 @@
     </div>
 
     <script>
-        // Static Dataset with Dynamic Folder Asset Mapping
+        // Static Dataset - Yahan folderName property de di hai simple naam ke liye
         const staticTrainingData = [
             {
                 title: "1. Applications of AI, Robotics and Disruptive Technologies in Aviation Industry",
@@ -563,8 +563,8 @@
                 date: "Mar 6, 2024",
                 type: "Achievement",
                 description: "Delivered keynote lecture detailing modern enterprise integration of automated robotic assistance, predictive analytics for flow control, and next-generation safety architectures inside modern hub operation spaces.",
-                // Aap images ke file names is array mein likh sakte hain
-                images: ["image1.jpg", "image2.jpg"] 
+                folderName: "ai-robotics-2024", // Folder ka short simple naam
+                images: ["image1.jpg", "image2.jpg"] // Us folder ke andar rakhi hui pictures
             },
             {
                 title: "2. Strategic Airport Infrastructure and Operational Resilience",
@@ -573,6 +573,7 @@
                 date: "Nov 12, 2023",
                 type: "Seminar",
                 description: "Session covering risk mitigation strategy, business continuity frameworks, and system scaling paradigms during heavy traffic scenarios.",
+                folderName: "resilience-2023",
                 images: []
             },
             {
@@ -582,6 +583,7 @@
                 date: "Jul 18, 2023",
                 type: "Certificate",
                 description: "An intensive overview regarding regulatory alignment, multi-stakeholder policy formulation, and safety governance benchmarks.",
+                folderName: "policy-2023",
                 images: []
             }
         ];
@@ -654,8 +656,8 @@
                 groups[categoryName].forEach(item => {
                     const isAchievement = item.type === 'Achievement';
                     
-                    // Folder structure generator path template: "training picture/Date - Title/filename"
-                    const folderPath = `training picture/${item.date} - ${item.title}/`;
+                    // Ab path directly short name use karega: "training picture/ai-robotics-2024/"
+                    const folderPath = `training picture/${item.folderName}/`;
 
                     let galleryHtml = '';
                     if (item.images && item.images.length > 0) {
