@@ -21,11 +21,7 @@
             --radius: 16px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -54,11 +50,7 @@
             align-items: center;
         }
 
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-
+        .filter-group { display: flex; flex-direction: column; }
         .filter-group label {
             font-size: 0.75rem;
             font-weight: 700;
@@ -102,9 +94,7 @@
             transition: background-color 0.2s;
         }
 
-        .btn-search-go:hover {
-            background-color: var(--accent-hover);
-        }
+        .btn-search-go:hover { background-color: var(--accent-hover); }
 
         /* Main Hero Card Profile Layout */
         .hero-section {
@@ -124,9 +114,7 @@
         }
 
         @media (min-width: 768px) {
-            .profile-layout {
-                grid-template-columns: 220px 1fr;
-            }
+            .profile-layout { grid-template-columns: 220px 1fr; }
         }
 
         .profile-img-container {
@@ -139,11 +127,7 @@
             background-color: #0f172a;
         }
 
-        .profile-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
 
         .hero-content h1 {
             font-size: 2.4rem;
@@ -178,10 +162,7 @@
             margin-top: 15px;
         }
 
-        /* View Detailed Profile Action Button */
-        .action-container {
-            margin-top: 25px;
-        }
+        .action-container { margin-top: 25px; }
 
         .btn-block-action {
             width: 100%;
@@ -197,9 +178,7 @@
             text-align: center;
         }
 
-        .btn-block-action:hover {
-            background-color: #1d4ed8;
-        }
+        .btn-block-action:hover { background-color: #1d4ed8; }
 
         /* Toggleable Panel for Education */
         #profileSection {
@@ -216,9 +195,7 @@
         }
 
         @media (min-width: 768px) {
-            .education-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .education-grid { grid-template-columns: 1fr 1fr; }
         }
 
         .education-card {
@@ -236,18 +213,8 @@
             margin-bottom: 15px;
         }
 
-        .education-top h4 {
-            font-size: 1.05rem;
-            color: white;
-            font-weight: 600;
-        }
-
-        .edu-caption {
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            margin-top: 4px;
-        }
-
+        .education-top h4 { font-size: 1.05rem; color: white; font-weight: 600; }
+        .edu-caption { font-size: 0.85rem; color: #cbd5e1; margin-top: 4px; }
         .edu-year {
             font-size: 0.8rem;
             background: rgba(255, 255, 255, 0.15);
@@ -257,13 +224,7 @@
             font-weight: 600;
         }
 
-        .edu-images {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 12px;
-        }
-
+        .edu-images { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
         .gallery-card {
             border-radius: 6px;
             overflow: hidden;
@@ -271,32 +232,14 @@
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        .gallery-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Timeline / Category UI Sections */
-        .timeline-section {
-            margin-top: 10px;
-        }
-
-        .section-header {
-            margin-bottom: 25px;
-        }
-
-        .section-header h2 {
-            font-size: 1.4rem;
-            color: var(--text-dark);
-            font-weight: 700;
-        }
-
-        .category-group-wrapper {
-            margin-bottom: 35px;
-        }
-
+        /* Timeline UI Sections */
+        .timeline-section { margin-top: 10px; }
+        .section-header { margin-bottom: 25px; }
+        .section-header h2 { font-size: 1.4rem; color: var(--text-dark); font-weight: 700; }
+        .category-group-wrapper { margin-bottom: 35px; }
+        
         .category-title-banner {
             background-color: #dbeafe;
             color: #1e40af;
@@ -322,11 +265,7 @@
             background-color: #cbd5e1;
         }
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
+        .timeline-item { position: relative; margin-bottom: 20px; }
         .timeline-marker {
             position: absolute;
             left: -25px;
@@ -352,10 +291,8 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .timeline-card.achievement-highlight {
-            border-left: 4px solid #f59e0b;
-        }
-
+        .timeline-card.achievement-highlight { border-left: 4px solid #f59e0b; }
+        
         .badge-achievement {
             background-color: #fef3c7;
             color: #d97706;
@@ -376,33 +313,11 @@
             margin-bottom: 8px;
         }
 
-        .training-top h3 {
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            font-weight: 700;
-        }
+        .training-top h3 { font-size: 1.1rem; color: var(--text-dark); font-weight: 700; }
+        .provider { font-size: 0.9rem; color: #f97316; font-weight: 500; margin-top: 2px; }
+        .training-date { font-size: 0.85rem; color: #1e3a8a; font-weight: 600; white-space: nowrap; }
+        .training-description { font-size: 0.95rem; color: var(--text-main); }
 
-        .provider {
-            font-size: 0.9rem;
-            color: #f97316;
-            font-weight: 500;
-            margin-top: 2px;
-        }
-
-        .training-date {
-            font-size: 0.85rem;
-            color: #1e3a8a;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .training-description {
-            font-size: 0.95rem;
-            color: var(--text-main);
-            margin-bottom: 15px;
-        }
-
-        /* Gallery Grid Layout */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -419,29 +334,13 @@
             color: var(--text-muted);
         }
 
-        .footer-credit {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
+        .footer-credit { margin-top: 50px; text-align: center; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
 
         @media (max-width: 767px) {
-            .toolbar-filter-section {
-                grid-template-columns: 1fr;
-            }
-            .btn-search-go {
-                margin-top: 0;
-                width: 100%;
-            }
-            .training-top {
-                flex-direction: column;
-                gap: 5px;
-            }
-            .training-date {
-                align-self: flex-start;
-            }
+            .toolbar-filter-section { grid-template-columns: 1fr; }
+            .btn-search-go { margin-top: 0; width: 100%; }
+            .training-top { flex-direction: column; gap: 5px; }
+            .training-date { align-self: flex-start; }
         }
     </style>
 </head>
@@ -553,40 +452,11 @@
         <div class="footer-credit">Syed Aftab Gilani</div>
     </div>
 
+    <script src="data.js"></script>
+
     <script>
-        // Static Dataset - Yahan folderName property de di hai simple naam ke liye
-        const staticTrainingData = [
-            {
-                title: "1. Applications of AI, Robotics and Disruptive Technologies in Aviation Industry",
-                provider: "Ghulam Ishaq Khan Institute of Engineering Sciences and Technology",
-                category: "AI and Digital Transformation in Aviation Industry",
-                date: "Mar 6, 2024",
-                type: "Achievement",
-                description: "Delivered keynote lecture detailing modern enterprise integration of automated robotic assistance, predictive analytics for flow control, and next-generation safety architectures inside modern hub operation spaces.",
-                folderName: "ai-robotics-2024", // Folder ka short simple naam
-                images: ["image1.jpg", "image2.jpg"] // Us folder ke andar rakhi hui pictures
-            },
-            {
-                title: "2. Strategic Airport Infrastructure and Operational Resilience",
-                provider: "Civil Aviation Training Institute",
-                category: "Airport Management & Infrastructure",
-                date: "Nov 12, 2023",
-                type: "Seminar",
-                description: "Session covering risk mitigation strategy, business continuity frameworks, and system scaling paradigms during heavy traffic scenarios.",
-                folderName: "resilience-2023",
-                images: []
-            },
-            {
-                title: "3. Public Policy Frameworks in Modern Civil Aviation",
-                provider: "National University Policy Forums",
-                category: "Aviation Policy & Governance",
-                date: "Jul 18, 2023",
-                type: "Certificate",
-                description: "An intensive overview regarding regulatory alignment, multi-stakeholder policy formulation, and safety governance benchmarks.",
-                folderName: "policy-2023",
-                images: []
-            }
-        ];
+        // Check if data loaded correctly from data.js
+        const trainingData = typeof staticTrainingData !== 'undefined' ? staticTrainingData : [];
 
         const searchInput = document.getElementById('searchInput');
         const categoryFilter = document.getElementById('categoryFilter');
@@ -599,7 +469,7 @@
         const searchGoBtn = document.getElementById('searchGoBtn');
 
         function populateCategories() {
-            const categories = [...new Set(staticTrainingData.map(item => item.category).filter(Boolean))].sort();
+            const categories = [...new Set(trainingData.map(item => item.category).filter(Boolean))].sort();
             categories.forEach(cat => {
                 const option = document.createElement('option');
                 option.value = cat;
@@ -613,11 +483,12 @@
             const selectedCat = categoryFilter.value;
             const selectedType = typeFilter.value;
 
-            const filtered = staticTrainingData.filter(item => {
-                const matchesSearch = !searchVal || 
-                    item.title.toLowerCase().includes(searchVal) || 
-                    item.provider.toLowerCase().includes(searchVal) || 
-                    item.description.toLowerCase().includes(searchVal);
+            const filtered = trainingData.filter(item => {
+                const titleMatch = item.showFields.title && item.title.toLowerCase().includes(searchVal);
+                const providerMatch = item.showFields.provider && item.provider.toLowerCase().includes(searchVal);
+                const generalMatch = item.category.toLowerCase().includes(searchVal) || (item.description && item.description.toLowerCase().includes(searchVal));
+                
+                const matchesSearch = !searchVal || titleMatch || providerMatch || generalMatch;
                 const matchesCat = !selectedCat || item.category === selectedCat;
                 const matchesType = !selectedType || item.type === selectedType;
                 
@@ -633,39 +504,46 @@
                 noResultsMessage.style.display = 'none';
             }
 
+            // Grouping by active Category
             const groups = {};
             filtered.forEach(item => {
-                if (!groups[item.category]) {
-                    groups[item.category] = [];
+                // If category visibility is true, group by category name, else group under general bucket
+                const currentCatName = item.showFields.category ? item.category : "Other Recognitions";
+                if (!groups[currentCatName]) {
+                    groups[currentCatName] = [];
                 }
-                groups[item.category].push(item);
+                groups[currentCatName].push(item);
             });
 
             for (const categoryName in groups) {
                 const groupWrapper = document.createElement('div');
                 groupWrapper.className = 'category-group-wrapper';
 
-                const banner = document.createElement('div');
-                banner.className = 'category-title-banner';
-                banner.textContent = categoryName;
-                groupWrapper.appendChild(banner);
+                // Only render category banner if category name is active
+                if (categoryName !== "Other Recognitions") {
+                    const banner = document.createElement('div');
+                    banner.className = 'category-title-banner';
+                    banner.textContent = categoryName;
+                    groupWrapper.appendChild(banner);
+                }
 
                 const timelineWrapper = document.createElement('div');
                 timelineWrapper.className = 'timeline-wrapper';
 
                 groups[categoryName].forEach(item => {
-                    const isAchievement = item.type === 'Achievement';
+                    const sf = item.showFields;
+                    const isAchievement = sf.type && item.type === 'Achievement';
                     
-                    // Ab path directly short name use karega: "training picture/ai-robotics-2024/"
                     const folderPath = `training picture/${item.folderName}/`;
 
+                    // Generate images grid ONLY if array has files listed inside data.js
                     let galleryHtml = '';
                     if (item.images && item.images.length > 0) {
                         galleryHtml = `<div class="gallery-grid">`;
                         item.images.forEach(imgName => {
                             galleryHtml += `
                                 <div class="gallery-card">
-                                    <img src="${folderPath}${imgName}" alt="Training Artifact" onerror="this.parentNode.style.display='none'">
+                                    <img src="${folderPath}${imgName}" alt="Training Artifact">
                                 </div>
                             `;
                         });
@@ -679,12 +557,12 @@
                                 ${isAchievement ? '<span class="badge-achievement">🏆 Highlighted Lecture / Achievement</span>' : ''}
                                 <div class="training-top">
                                     <div>
-                                        <h3>${item.title}</h3>
-                                        <div class="provider">${item.provider}</div>
+                                        ${sf.title ? `<h3>${item.title}</h3>` : ''}
+                                        ${sf.provider ? `<div class="provider">${item.provider}</div>` : ''}
                                     </div>
-                                    <div class="training-date">${item.date}</div>
+                                    ${sf.date ? `<div class="training-date">${item.date}</div>` : ''}
                                 </div>
-                                <p class="training-description">${item.description}</p>
+                                ${item.description ? `<p class="training-description">${item.description}</p>` : ''}
                                 ${galleryHtml}
                             </div>
                         </div>
