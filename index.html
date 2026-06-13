@@ -5,523 +5,319 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Portfolio Dashboard - Syed Aftab Gilani</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --text-dark: #0f172a;
-            --text-main: #334155;
+            --primary-blue: #1e3a8a;
+            --primary-dark: #0f172a;
+            --bg-light: #f8fafc;
             --text-muted: #64748b;
-            --accent: #2563eb;
-            --border: #e2e8f0;
-            --radius: 12px;
+            --accent-yellow: #eab308;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            background-color: var(--bg-light);
+            color: var(--primary-dark);
+            line-height: 1.6;
             padding: 40px 20px;
-            line-height: 1.5;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; }
-
-        .hero-section {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            color: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        .profile-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            align-items: center;
+        /* ==========================================================================
+           Hero Card Wrapper & Grid Alignment
+           ========================================================================== */
+        .hero-card-wrapper {
+            background-color: var(--primary-blue);
+            border-radius: 24px;
+            padding: 32px;
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+            margin-bottom: 32px;
         }
 
-        @media (min-width: 768px) {
-            .profile-layout { grid-template-columns: 220px 1fr; }
-        }
-
-        .profile-img-container {
-            width: 220px;
-            height: 250px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 4px solid rgba(255, 255, 255, 0.15);
-            background-color: #0f172a;
-        }
-
-        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-        .hero-content h1 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: white;
-        }
-
-        .hero-subtitle {
-            font-size: 1.05rem;
-            color: #93c5fd;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .bio-box {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 18px;
-            font-size: 0.95rem;
-            color: #f1f5f9;
-        }
-
-        .bio-box p { margin-bottom: 12px; }
-        .bio-box p:last-of-type { margin-bottom: 0; }
-
-        .quote-box {
-            font-style: italic;
-            color: #fde047;
-            font-size: 0.95rem;
-            border-left: 3px solid #fde047;
-            padding-left: 12px;
-            margin-top: 15px;
-        }
-
-        .module-tabs {
+        /* Main Flex Container layout 
+           Ensures perfect vertical alignment with children components
+        */
+        .hero-main-layout {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 10px;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            border: none;
-            background: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-radius: 6px;
-        }
-
-        .tab-btn.active {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .filter-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .filter-group { display: flex; flex-direction: column; gap: 6px; }
-        .filter-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
-        .form-control {
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-family: inherit;
-            color: var(--text-dark);
-            background-color: #f8fafc;
-        }
-
-        .section-banner {
-            font-size: 1.5rem;
-            color: var(--text-dark);
-            font-weight: 700;
-            margin-bottom: 25px;
-            border-left: 4px solid var(--accent);
-            padding-left: 12px;
-        }
-
-        .category-block { margin-bottom: 35px; }
-        .category-header {
-            background-color: #eff6ff;
-            color: #1e40af;
-            font-size: 0.95rem;
-            font-weight: 700;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        .record-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-        }
-
-        .row-header {
-            display: flex;
-            justify-content: space-between;
+            gap: 32px;
             align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 10px;
         }
 
-        .row-header .main-topic {
-            font-size: 1.15rem;
-            color: var(--text-dark);
-            font-weight: 700;
-            flex: 1;
-        }
-
-        .row-header .side-date {
-            font-size: 0.95rem;
-            color: var(--accent);
-            font-weight: 600;
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        .sub-meta {
-            font-size: 0.9rem;
-            color: #f97316;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .description-text {
-            font-size: 0.95rem;
-            color: var(--text-main);
-            margin-bottom: 15px;
-        }
-
-        .image-container-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .portfolio-img-box {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            border-radius: 8px;
+        /* Left Side: Profile Image Outer Box */
+        .profile-img-box {
+            width: 220px;
+            flex-shrink: 0;
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
             overflow: hidden;
-            background-color: #f1f5f9;
-            border: 1px solid var(--border);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
-        .portfolio-img-box img {
+        .profile-img-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .profile-summary-details {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 30px;
+        /* Right Side: Profile Info & Bio Description */
+        .profile-info-box {
+            flex-grow: 1;
         }
-        .profile-summary-details h3 { margin-bottom: 15px; color: var(--text-dark); }
-        .profile-summary-details ul { padding-left: 20px; margin-bottom: 20px; color: var(--text-main); }
-        .profile-summary-details ul li { margin-bottom: 8px; }
 
-        @media print {
-            body {
-                background: white !important;
-                color: black !important;
-                padding: 0 !important;
-            }
-            .module-tabs, .filter-panel {
-                display: none !important;
-            }
-            .hero-section {
-                background: #1e3a8a !important;
-                color: white !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                margin-bottom: 20px !important;
-            }
-            .bio-box {
-                background: rgba(255, 255, 255, 0.1) !important;
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            }
-            .quote-box { color: #eab308 !important; }
-            .container {
-                max-width: 100% !important;
-                width: 100% !important;
-            }
-            .record-card {
-                border: none !important;
-                border-bottom: 1px solid #cbd5e1 !important;
-                border-radius: 0 !important;
-                padding: 15px 0 !important;
-                page-break-inside: avoid;
-            }
-            .category-header {
-                background-color: #f1f5f9 !important;
-                color: black !important;
-                border: 1px solid #cbd5e1 !important;
-                page-break-after: avoid;
-            }
-            .row-header .side-date { color: black !important; }
-            .sub-meta { color: #c2410c !important; }
-            .portfolio-img-box {
-                border: 1px solid #94a3b8 !important;
-                page-break-inside: avoid;
-            }
+        .profile-info-box h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-info-box .designation {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .bio-description {
+            background-color: rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bio-description p {
+            font-size: 14.5px;
+            margin-bottom: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: justify;
+        }
+
+        .bio-description p:last-of-type {
+            margin-bottom: 20px;
+        }
+
+        /* Blockquote Styling */
+        .yellow-quote {
+            border-left: 3px solid var(--accent-yellow);
+            padding-left: 14px;
+            font-style: italic;
+            color: var(--accent-yellow);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           Expandable Section (Education Details)
+           Perfectly vertically aligned from the start of the section layout container
+           ========================================================================== */
+        .detailed-profile-section {
+            display: none; /* Initially hidden */
+            margin-top: 32px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .educational-qualifications-container {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            color: var(--primary-dark);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary-blue);
+            color: var(--primary-dark);
+        }
+
+        /* Qualification Items List */
+        .qualification-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .qualification-card:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .degree-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+        }
+
+        .degree-details p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .degree-year {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* ==========================================================================
+           Action Trigger Button
+           ========================================================================== */
+        .action-button-area {
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        .toggle-layout-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #1a4fc8;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            text-align: center;
+        }
+
+        .toggle-layout-btn:hover {
+            background-color: #133ea3;
+        }
+
+        .toggle-layout-btn:active {
+            transform: scale(0.995);
+        }
+
+        /* Simple Fade Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           Other Page Sections (Lectures)
+           ========================================================================== */
+        .lectures-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .lectures-section h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <section class="hero-section">
-            <div class="profile-layout">
-                <div class="profile-img-container">
-                    <img src="profile.jpg" alt="Syed Aftab Gilani" onerror="this.src='https://via.placeholder.com/220x250?text=Profile+Image'">
-                </div>
-                <div class="hero-content">
-                    <h1>Syed Aftab Gilani</h1>
-                    <div class="hero-subtitle">COO/Airport Manager, Islamabad International Airport</div>
+<div class="container">
+
+    <div class="hero-card-wrapper">
+        <div class="hero-main-layout">
+            
+            <div class="profile-img-box">
+                <img src="your-profile-image.jpg" alt="Syed Aftab Gilani">
+            </div>
+            
+            <div class="profile-info-box">
+                <h2>Syed Aftab Gilani</h2>
+                <div class="designation">COO/Airport Manager, Islamabad International Airport</div>
+                
+                <div class="bio-description">
+                    <p>MBA in Operations Management from LUMS, M.Sc. in Physics from GC University Lahore, Basic Air Traffic Control Course, Aviation Policy, Civil Aviation management and Public Policy Program from renowned institutions in Singapore and South Korea.</p>
+                    <p>Committed to advancing Airport Operations through innovation, efficiency, and continuous improvement, while fostering a culture of safety, service excellence, and sustainable growth.</p>
                     
-                    <div class="bio-box">
-                        <p>MBA in Operations Management from LUMS, M.Sc. in Physics from GC University Lahore, Basic Air Traffic Control Course, Aviation Policy, Civil Aviation management and Public Policy Program from renowned institutions in Singapore and South Korea.</p>
-                        <p>Committed to advancing Airport Operations through innovation, efficiency, and continuous improvement, while fostering a culture of safety, service excellence, and sustainable growth.</p>
-                        
-                        <div class="quote-box">
-                            "What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others."
-                        </div>
-                    </div>
+                    <blockquote class="yellow-quote">
+                        "What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others."
+                    </blockquote>
                 </div>
             </div>
-        </section>
 
-        <nav class="module-tabs" id="moduleTabs"></nav>
+        </div>
 
-        <section class="filter-panel" id="filterPanel">
-            <div class="filter-group">
-                <label>Keyword Search</label>
-                <input type="text" id="keywordSearch" class="form-control" placeholder="Search records...">
+        <div id="detailedProfileSection" class="detailed-profile-section">
+            <div class="educational-qualifications-container">
+                <div class="section-title">Educational Qualifications</div>
+                
+                <div class="qualification-card">
+                    <div class="degree-details">
+                        <h4>Master of Business Administration (MBA)</h4>
+                        <p>Lahore University of Management Sciences (LUMS)</p>
+                    </div>
+                    <div class="degree-year">2010 - 2012</div>
+                </div>
+
+                <div class="qualification-card">
+                    <div class="degree-details">
+                        <h4>M.Sc. in Physics</h4>
+                        <p>GC University Lahore</p>
+                    </div>
+                    <div class="degree-year">Before 2010</div>
+                </div>
+
+                <div class="qualification-card">
+                    <div class="degree-details">
+                        <h4>Basic Air Traffic Control Course &amp; Public Policy Programs</h4>
+                        <p>Renowned institutions in Singapore and South Korea</p>
+                    </div>
+                    <div class="degree-year">Professional Certifications</div>
+                </div>
             </div>
-            <div class="filter-group" id="catFilterWrapper">
-                <label>Category Filter</label>
-                <select id="dynamicCatFilter" class="form-control">
-                    <option value="">All Categories</option>
-                </select>
-            </div>
-        </section>
+        </div>
 
-        <main>
-            <h2 class="section-banner" id="sectionTitle">Load Module</h2>
-            <div id="renderViewport"></div>
-        </main>
+        <div class="action-button-area">
+            <button id="toggleProfileBtn" class="toggle-layout-btn" onclick="handleProfileToggle()">
+                Click to view Detailed Profile
+            </button>
+        </div>
+
     </div>
 
-    <script src="config.js"></script>
-    <script src="educationData.js"></script>
-    <script src="trainingData.js"></script>
-    <script src="achievementData.js"></script>
+    <div class="lectures-section">
+        <h3>Lectures Delivered</h3>
+        </div>
 
-    <script>
-        let currentModuleId = PortfolioConfig.sections[0].id;
+</div>
 
-        const profileData = [
-            {
-                topic: "Executive Core Competencies",
-                date: "Active",
-                description: "Over the course of an illustrious career managing strategic aviation hubs, key expertise domains include Air Traffic Management, Strategic Infrastructure Planning, Airport Resource Optimization, and Airport Collaborative Decision Making (A-CDM)."
-            },
-            {
-                topic: "International Representations & Delegations",
-                date: "Continuous",
-                description: "Represented national interests and civil aviation frameworks across bilateral infrastructure asset assignments and international working groups in Singapore, South Korea, and global forums."
-            }
-        ];
-
-        function getActiveDataset() {
-            if (currentModuleId === "profile") return profileData;
-            const section = PortfolioConfig.sections.find(s => s.id === currentModuleId);
-            return (section && window[section.dataRef]) ? window[section.dataRef] : [];
+<script>
+    function handleProfileToggle() {
+        const targetSection = document.getElementById('detailedProfileSection');
+        const actionBtn = document.getElementById('toggleProfileBtn');
+        
+        // Checking current computed state logic
+        if (targetSection.style.display === 'none' || targetSection.style.display === '') {
+            targetSection.style.display = 'block';
+            actionBtn.innerText = 'Hide Detailed Profile';
+        } else {
+            targetSection.style.display = 'none';
+            actionBtn.innerText = 'Click to view Detailed Profile';
         }
+    }
+</script>
 
-        function buildNavigation() {
-            const tabsContainer = document.getElementById('moduleTabs');
-            if (!tabsContainer) return;
-            tabsContainer.innerHTML = '';
-            PortfolioConfig.sections.forEach((sec) => {
-                const btn = document.createElement('button');
-                btn.className = `tab-btn ${sec.id === currentModuleId ? 'active' : ''}`;
-                btn.textContent = sec.title;
-                btn.onclick = () => switchModule(sec.id);
-                tabsContainer.appendChild(btn);
-            });
-        }
-
-        function switchModule(moduleId) {
-            currentModuleId = moduleId;
-            buildNavigation();
-            
-            const keywordInput = document.getElementById('keywordSearch');
-            const catFilter = document.getElementById('dynamicCatFilter');
-            if (keywordInput) keywordInput.value = '';
-            if (catFilter) catFilter.value = '';
-            
-            const filterPanel = document.getElementById('filterPanel');
-            if (filterPanel) {
-                if (currentModuleId === "profile") {
-                    filterPanel.style.display = 'none';
-                } else {
-                    filterPanel.style.display = 'grid';
-                    repopulateFilters();
-                }
-            }
-            renderEngine();
-        }
-
-        function repopulateFilters() {
-            const data = getActiveDataset();
-            const wrapper = document.getElementById('catFilterWrapper');
-            const select = document.getElementById('dynamicCatFilter');
-            if (!select || !wrapper) return;
-            
-            const standardHasCategory = data.some(item => item.category);
-            
-            if (!standardHasCategory) {
-                wrapper.style.display = 'none';
-                select.value = '';
-                return;
-            }
-            
-            wrapper.style.display = 'flex';
-            select.innerHTML = '<option value="">All Categories</option>';
-            
-            const categories = [...new Set(data.map(item => item.category).filter(Boolean))].sort();
-            categories.forEach(cat => {
-                const opt = document.createElement('option');
-                opt.value = cat;
-                opt.textContent = cat;
-                select.appendChild(opt);
-            });
-        }
-
-        function renderEngine() {
-            const data = getActiveDataset();
-            const activeSectionMeta = PortfolioConfig.sections.find(s => s.id === currentModuleId);
-            const sectionTitleEl = document.getElementById('sectionTitle');
-            if (sectionTitleEl && activeSectionMeta) {
-                sectionTitleEl.textContent = activeSectionMeta.title;
-            }
-
-            const keywordInput = document.getElementById('keywordSearch');
-            const catFilter = document.getElementById('dynamicCatFilter');
-            
-            const searchVal = keywordInput ? keywordInput.value.toLowerCase().trim() : '';
-            const selectCat = catFilter ? catFilter.value : '';
-
-            const filtered = data.filter(item => {
-                const matchCat = !selectCat || item.category === selectCat;
-                const txtTitle = (item.topic || '').toLowerCase();
-                const txtSub = (item.university || item.provider || item.authority || '').toLowerCase();
-                const txtDesc = (item.description || '').toLowerCase();
-                const matchSearch = !searchVal || txtTitle.includes(searchVal) || txtSub.includes(searchVal) || txtDesc.includes(searchVal);
-
-                return matchCat && matchSearch;
-            });
-
-            const viewport = document.getElementById('renderViewport');
-            if (!viewport) return;
-            viewport.innerHTML = '';
-
-            if (filtered.length === 0) {
-                viewport.innerHTML = '<div style="padding:40px; text-align:center; color:#64748b;">No items match selected filters.</div>';
-                return;
-            }
-
-            const buckets = {};
-            filtered.forEach(item => {
-                const key = item.category || "General";
-                if (!buckets[key]) buckets[key] = [];
-                buckets[key].push(item);
-            });
-
-            for (const bucketName in buckets) {
-                const block = document.createElement('div');
-                block.className = 'category-block';
-
-                if (bucketName !== "General") {
-                    const header = document.createElement('div');
-                    header.className = 'category-header';
-                    header.textContent = bucketName;
-                    block.appendChild(header);
-                }
-
-                buckets[bucketName].forEach(item => {
-                    const subMetaContent = item.university || item.location || item.authority || '';
-                    
-                    let imagesGridHtml = '';
-                    if (item.images && item.images.length > 0) {
-                        imagesGridHtml = `<div class="image-container-grid">`;
-                        item.images.forEach(img => {
-                            const srcPath = `${item.baseFolder}/${item.subFolder}/${img}`;
-                            imagesGridHtml += `
-                                <div class="portfolio-img-box">
-                                    <img src="${srcPath}" alt="Portfolio Structural Asset" onerror="this.parentNode.style.display='none'">
-                                </div>`;
-                        });
-                        imagesGridHtml += `</div>`;
-                    }
-
-                    const cardHtml = `
-                        <div class="record-card">
-                            <div class="row-header">
-                                <div class="main-topic">${item.topic}</div>
-                                <div class="side-date">${item.date}</div>
-                            </div>
-                            ${subMetaContent ? `<div class="sub-meta">${subMetaContent}</div>` : ''}
-                            ${item.description ? `<div class="description-text">${item.description}</div>` : ''}
-                            ${imagesGridHtml}
-                        </div>
-                    `;
-                    block.insertAdjacentHTML('beforeend', cardHtml);
-                });
-
-                viewport.appendChild(block);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            buildNavigation();
-            
-            if (currentModuleId !== "profile") {
-                repopulateFilters();
-            } else {
-                const filterPanel = document.getElementById('filterPanel');
-                if (filterPanel) filterPanel.style.display = 'none';
-            }
-            
-            renderEngine();
-
-            const keywordSearchEl = document.getElementById('keywordSearch');
-            const dynamicCatFilterEl = document.getElementById('dynamicCatFilter');
-            
-            if (keywordSearchEl) keywordSearchEl.addEventListener('input', renderEngine);
-            if (dynamicCatFilterEl) dynamicCatFilterEl.addEventListener('change', renderEngine);
-        });
-    </script>
 </body>
 </html>
