@@ -28,7 +28,6 @@
 
         .container { max-width: 1000px; margin: 0 auto; }
 
-        /* --- Main Hero Card Profile Layout (image_ec18db.jpg) --- */
         .hero-section {
             background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
             color: white;
@@ -95,7 +94,6 @@
             margin-top: 15px;
         }
 
-        /* Navigation Module Selector Tabs */
         .module-tabs {
             display: flex;
             gap: 10px;
@@ -121,7 +119,6 @@
             color: white;
         }
 
-        /* Filter Controls */
         .filter-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -144,7 +141,6 @@
             background-color: #f8fafc;
         }
 
-        /* Dynamic Section Content Renderer */
         .section-banner {
             font-size: 1.5rem;
             color: var(--text-dark);
@@ -165,7 +161,6 @@
             margin-bottom: 20px;
         }
 
-        /* Portfolio Structure Records Card Layout */
         .record-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -175,7 +170,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        /* Extreme Right Row Alignment Configuration */
         .row-header {
             display: flex;
             justify-content: space-between;
@@ -212,7 +206,6 @@
             margin-bottom: 15px;
         }
 
-        /* Standardized Uniform Container Shapes for Pictures */
         .image-container-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -236,7 +229,6 @@
             display: block;
         }
 
-        /* Permanent Profile View Elements */
         .profile-summary-details {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -247,7 +239,6 @@
         .profile-summary-details ul { padding-left: 20px; margin-bottom: 20px; color: var(--text-main); }
         .profile-summary-details ul li { margin-bottom: 8px; }
 
-        /* --- WYSIWYG HIGH FIDELITY PDF PRINT PRESS FORMATTING --- */
         @media print {
             body {
                 background: white !important;
@@ -299,7 +290,6 @@
 
     <div class="container">
         
-        <!-- ================= PERMANENT PROFILE SUMMARY CARD (image_ec18db.jpg) ================= -->
         <section class="hero-section">
             <div class="profile-layout">
                 <div class="profile-img-container">
@@ -321,10 +311,8 @@
             </div>
         </section>
 
-        <!-- Central Module Selector Tabs -->
         <nav class="module-tabs" id="moduleTabs"></nav>
 
-        <!-- Search and Context Dynamic Filters -->
         <section class="filter-panel" id="filterPanel">
             <div class="filter-group">
                 <label>Keyword Search</label>
@@ -338,14 +326,12 @@
             </div>
         </section>
 
-        <!-- Dynamic Output Viewport Container -->
         <main>
             <h2 class="section-banner" id="sectionTitle">Load Module</h2>
             <div id="renderViewport"></div>
         </main>
     </div>
 
-    <!-- SCRIPT DEJECTIONS LINKING DATA CONFIGURATIONS -->
     <script src="config.js"></script>
     <script src="educationData.js"></script>
     <script src="trainingData.js"></script>
@@ -354,10 +340,9 @@
     <script>
         let currentModuleId = PortfolioConfig.sections[0].id;
 
-        // Static Data fallback for Profile Summary itself
         const profileData = [
             {
-                topic: "Executive Executive Core Competencies",
+                topic: "Executive Core Competencies",
                 date: "Active",
                 description: "Over the course of an illustrious career managing strategic aviation hubs, key expertise domains include Air Traffic Management, Strategic Infrastructure Planning, Airport Resource Optimization, and Airport Collaborative Decision Making (A-CDM)."
             },
@@ -391,7 +376,6 @@
             buildNavigation();
             document.getElementById('keywordSearch').value = '';
             
-            // Hide/Show dynamic search parameters panel depending on context
             const filterPanel = document.getElementById('filterPanel');
             if (currentModuleId === "profile") {
                 filterPanel.style.display = 'none';
@@ -420,7 +404,7 @@
             
             const categories = [...new Set(data.map(item => item.category).filter(Boolean))].sort();
             categories.forEach(cat => {
-                const opt = document.createElement('opt');
+                const opt = document.createElement('option');
                 opt.value = cat;
                 opt.textContent = cat;
                 select.appendChild(opt);
@@ -507,7 +491,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             buildNavigation();
-            // Start directly on Profile Summary page
             const filterPanel = document.getElementById('filterPanel');
             filterPanel.style.display = 'none';
             renderEngine();
