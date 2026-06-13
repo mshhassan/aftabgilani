@@ -10,6 +10,17 @@
       "provider": "Islamabad International Airport",
       "description": "Shared knowledge on Emerging technologies for safe, secure, and efficient aviation operations with the students.",
       "image": "images/foundation-uni.jpg"
+    },
+    {
+      "id": 1781342444614,
+      "title": "Applications of AI, Robotics and Disruptive Technologies in Aviation Industry",
+      "subtitle": "Ghulam Ishaq Khan Institute of Engineering Sciences and Technology",
+      "category": "AI and Digital Transformation in Aviation Industry",
+      "type": "Seminar",
+      "date": "2024-03-06",
+      "provider": "Ghulam Ishaq Khan Institute of Engineering Sciences and Technology",
+      "description": "Digital Technologies are playing an important role in improving Aviation business. Shared my views with faculty and students of Computer Science and Engineering on \"Applications of Artificial intelligence, Robotics and other Disruptive technologies in Aviation Industry/k\" at Ghulam Ishaq Khan Institute of Engineering Sciences and Technology",
+      "image": null
     }
   ]
 }
