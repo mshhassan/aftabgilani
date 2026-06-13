@@ -13,6 +13,8 @@
             --bg-light: #f8fafc;
             --text-muted: #64748b;
             --accent-yellow: #eab308;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
         }
 
         * {
@@ -35,7 +37,7 @@
         }
 
         /* ==========================================================================
-           Hero Card Wrapper & Grid Alignment (Updated)
+           Hero Card Wrapper & Grid Alignment
            ========================================================================== */
         .hero-card-wrapper {
             background-color: var(--primary-blue);
@@ -46,7 +48,6 @@
             margin-bottom: 32px;
         }
 
-        /* Header Row: Name & Designation left-aligned perfectly */
         .hero-header-row {
             width: 100%;
             margin-bottom: 20px;
@@ -65,14 +66,12 @@
             font-weight: 500;
         }
 
-        /* Body Row: Profile Image brought down next to Bio Description */
         .hero-body-row {
             display: flex;
             gap: 28px;
-            align-items: stretch; /* Vertically aligns height of image container and text box */
+            align-items: stretch;
         }
 
-        /* Profile Picture Box (Positioned below Name) */
         .profile-img-box {
             width: 220px;
             flex-shrink: 0;
@@ -89,7 +88,6 @@
             display: block;
         }
 
-        /* Right Side: Bio Description Content Box */
         .profile-info-box {
             flex-grow: 1;
         }
@@ -99,7 +97,7 @@
             border-radius: 14px;
             padding: 22px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            height: 100%; /* Ensures horizontal boundary alignment matching image block */
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -116,7 +114,6 @@
             margin-bottom: 0;
         }
 
-        /* Blockquote Styling */
         .yellow-quote {
             border-left: 3px solid var(--accent-yellow);
             padding-left: 14px;
@@ -131,7 +128,7 @@
            Expandable Section (Education Details)
            ========================================================================== */
         .detailed-profile-section {
-            display: none; /* Initially hidden */
+            display: none;
             margin-top: 32px;
             animation: fadeIn 0.4s ease forwards;
         }
@@ -153,7 +150,6 @@
             color: var(--primary-dark);
         }
 
-        /* Qualification Items List */
         .qualification-card {
             display: flex;
             justify-content: space-between;
@@ -186,9 +182,6 @@
             white-space: nowrap;
         }
 
-        /* ==========================================================================
-           Action Trigger Button
-           ========================================================================== */
         .action-button-area {
             margin-top: 24px;
             width: 100%;
@@ -222,18 +215,117 @@
         }
 
         /* ==========================================================================
-           Other Page Sections (Lectures)
+           Dynamic Lectures Grid Section Styling
            ========================================================================== */
         .lectures-section {
             margin-top: 40px;
             padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid var(--border-color);
         }
 
         .lectures-section h3 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
+            color: var(--primary-dark);
+        }
+
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .lectures-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-body-row {
+                flex-direction: column;
+            }
+            .profile-img-box {
+                width: 100%;
+                height: 250px;
+            }
+        }
+
+        .lecture-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .lecture-header {
+            margin-bottom: 14px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lecture-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .lecture-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .lecture-desc {
+            font-size: 14px;
+            color: #475569;
+            text-align: justify;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        /* Image Gallery Container Inside Card */
+        .lecture-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .gallery-img:hover {
+            opacity: 0.85;
         }
     </style>
 </head>
@@ -241,24 +333,19 @@
 
 <div class="container">
 
-    <!-- 1. Main Hero Block Area -->
     <div class="hero-card-wrapper">
         
-        <!-- Top Row: Name and Designation Left Aligned -->
         <div class="hero-header-row">
             <h2>Syed Aftab Gilani</h2>
             <div class="designation">COO/Airport Manager, Islamabad International Airport</div>
         </div>
 
-        <!-- Bottom Row: Profile Image and Bio Details Box side-by-side -->
         <div class="hero-body-row">
             
-            <!-- Profile Picture Box (Brought Down) -->
             <div class="profile-img-box">
                 <img src="profile.jpg" alt="Syed Aftab Gilani" onerror="this.src='https://via.placeholder.com/220x250?text=Profile+Image'">
             </div>
             
-            <!-- Info Text Box Block -->
             <div class="profile-info-box">
                 <div class="bio-description">
                     <div class="bio-text">
@@ -274,12 +361,10 @@
 
         </div>
 
-        <!-- 2. Expandable Sub-Section Layout (Education Records) -->
         <div id="detailedProfileSection" class="detailed-profile-section">
             <div class="educational-qualifications-container">
                 <div class="section-title">Educational Qualifications</div>
                 
-                <!-- Qualification Item 1 -->
                 <div class="qualification-card">
                     <div class="degree-details">
                         <h4>Master of Business Administration (MBA)</h4>
@@ -288,7 +373,6 @@
                     <div class="degree-year">2010 - 2012</div>
                 </div>
 
-                <!-- Qualification Item 2 -->
                 <div class="qualification-card">
                     <div class="degree-details">
                         <h4>M.Sc. in Physics</h4>
@@ -297,7 +381,6 @@
                     <div class="degree-year">Before 2010</div>
                 </div>
 
-                <!-- Qualification Item 3 -->
                 <div class="qualification-card">
                     <div class="degree-details">
                         <h4>Basic Air Traffic Control Course &amp; Public Policy Programs</h4>
@@ -308,7 +391,6 @@
             </div>
         </div>
 
-        <!-- 3. Dynamic Interactive Button Component -->
         <div class="action-button-area">
             <button id="toggleProfileBtn" class="toggle-layout-btn" onclick="handleProfileToggle()">
                 Click to view Detailed Profile
@@ -317,16 +399,17 @@
 
     </div>
 
-    <!-- Outer Page Section (Lectures Delivered) -->
     <div class="lectures-section">
         <h3>Lectures Delivered</h3>
-        <!-- Additional records modules populate here -->
+        <div class="lectures-grid" id="lecturesGridContainer"></div>
     </div>
 
 </div>
 
-<!-- Logic Implementation Script -->
+<script src="trainingData.js"></script>
+
 <script>
+    // Toggle Layout Engine for Profile Area
     function handleProfileToggle() {
         const targetSection = document.getElementById('detailedProfileSection');
         const actionBtn = document.getElementById('toggleProfileBtn');
@@ -339,6 +422,55 @@
             actionBtn.innerText = 'Click to view Detailed Profile';
         }
     }
+
+    // Dynamic UI Generation Engine
+    function renderLecturesDashboard() {
+        const container = document.getElementById('lecturesGridContainer');
+        container.innerHTML = ''; // Container Initialization Clear Out
+
+        // Verify if external trainingData structure is initialized completely
+        if (typeof trainingData === 'undefined' || !Array.isArray(trainingData)) {
+            container.innerHTML = '<p style="color:red; font-weight:600;">Error: trainingData.js source payload could not load completely.</p>';
+            return;
+        }
+
+        // Processing Array Iteration Context
+        trainingData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'lecture-card';
+
+            // Generate Gallery Layout Module Context
+            let galleryHTML = '';
+            if (item.images && item.images.length > 0) {
+                galleryHTML = `<div class="lecture-gallery">`;
+                item.images.forEach(imgSrc => {
+                    galleryHTML += `
+                        <img src="images/${imgSrc}" class="gallery-img" alt="Lecture Asset Instance" 
+                             onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'">`;
+                });
+                galleryHTML += `</div>`;
+            }
+
+            // Bind Payload Struct Components Together
+            card.innerHTML = `
+                <div>
+                    <div class="lecture-header">
+                        <span class="category-badge">${item.category}</span>
+                        <h4 class="lecture-title">${item.title}</h4>
+                    </div>
+                    <div class="lecture-meta">
+                        📍 <strong>${item.provider}</strong> &nbsp;|&nbsp; 📅 ${item.date} (${item.duration})
+                    </div>
+                    <p class="lecture-desc">${item.description}</p>
+                </div>
+                ${galleryHTML}
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Initialize compilation tasks when DOM structure parses fully
+    document.addEventListener('DOMContentLoaded', renderLecturesDashboard);
 </script>
 
 </body>
