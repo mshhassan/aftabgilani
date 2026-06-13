@@ -35,31 +35,47 @@
         }
 
         /* ==========================================================================
-           Hero Card Wrapper & Grid Alignment
+           Hero Card Wrapper & Grid Alignment (Updated)
            ========================================================================== */
         .hero-card-wrapper {
             background-color: var(--primary-blue);
             border-radius: 24px;
-            padding: 32px;
+            padding: 35px;
             color: #ffffff;
             box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
             margin-bottom: 32px;
         }
 
-        /* Main Flex Container layout 
-           Ensures perfect vertical alignment with children components
-        */
-        .hero-main-layout {
-            display: flex;
-            gap: 32px;
-            align-items: flex-start;
+        /* Header Row: Name & Designation left-aligned perfectly */
+        .hero-header-row {
+            width: 100%;
+            margin-bottom: 20px;
         }
 
-        /* Left Side: Profile Image Outer Box */
+        .hero-header-row h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-header-row .designation {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        /* Body Row: Profile Image brought down next to Bio Description */
+        .hero-body-row {
+            display: flex;
+            gap: 28px;
+            align-items: stretch; /* Vertically aligns height of image container and text box */
+        }
+
+        /* Profile Picture Box (Positioned below Name) */
         .profile-img-box {
             width: 220px;
             flex-shrink: 0;
-            aspect-ratio: 1 / 1;
             border-radius: 16px;
             overflow: hidden;
             border: 3px solid rgba(255, 255, 255, 0.2);
@@ -73,41 +89,31 @@
             display: block;
         }
 
-        /* Right Side: Profile Info & Bio Description */
+        /* Right Side: Bio Description Content Box */
         .profile-info-box {
             flex-grow: 1;
-        }
-
-        .profile-info-box h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            letter-spacing: -0.5px;
-        }
-
-        .profile-info-box .designation {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 24px;
-            font-weight: 500;
         }
 
         .bio-description {
             background-color: rgba(255, 255, 255, 0.07);
             border-radius: 14px;
-            padding: 20px;
+            padding: 22px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%; /* Ensures horizontal boundary alignment matching image block */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .bio-description p {
+        .bio-text p {
             font-size: 14.5px;
             margin-bottom: 16px;
             color: rgba(255, 255, 255, 0.9);
             text-align: justify;
         }
 
-        .bio-description p:last-of-type {
-            margin-bottom: 20px;
+        .bio-text p:last-of-type {
+            margin-bottom: 0;
         }
 
         /* Blockquote Styling */
@@ -118,11 +124,11 @@
             color: var(--accent-yellow);
             font-size: 14px;
             font-weight: 500;
+            margin-top: 20px;
         }
 
         /* ==========================================================================
            Expandable Section (Education Details)
-           Perfectly vertically aligned from the start of the section layout container
            ========================================================================== */
         .detailed-profile-section {
             display: none; /* Initially hidden */
@@ -210,7 +216,6 @@
             transform: scale(0.995);
         }
 
-        /* Simple Fade Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -236,20 +241,30 @@
 
 <div class="container">
 
+    <!-- 1. Main Hero Block Area -->
     <div class="hero-card-wrapper">
-        <div class="hero-main-layout">
+        
+        <!-- Top Row: Name and Designation Left Aligned -->
+        <div class="hero-header-row">
+            <h2>Syed Aftab Gilani</h2>
+            <div class="designation">COO/Airport Manager, Islamabad International Airport</div>
+        </div>
+
+        <!-- Bottom Row: Profile Image and Bio Details Box side-by-side -->
+        <div class="hero-body-row">
             
+            <!-- Profile Picture Box (Brought Down) -->
             <div class="profile-img-box">
-                <img src="your-profile-image.jpg" alt="Syed Aftab Gilani">
+                <img src="profile.jpg" alt="Syed Aftab Gilani" onerror="this.src='https://via.placeholder.com/220x250?text=Profile+Image'">
             </div>
             
+            <!-- Info Text Box Block -->
             <div class="profile-info-box">
-                <h2>Syed Aftab Gilani</h2>
-                <div class="designation">COO/Airport Manager, Islamabad International Airport</div>
-                
                 <div class="bio-description">
-                    <p>MBA in Operations Management from LUMS, M.Sc. in Physics from GC University Lahore, Basic Air Traffic Control Course, Aviation Policy, Civil Aviation management and Public Policy Program from renowned institutions in Singapore and South Korea.</p>
-                    <p>Committed to advancing Airport Operations through innovation, efficiency, and continuous improvement, while fostering a culture of safety, service excellence, and sustainable growth.</p>
+                    <div class="bio-text">
+                        <p>MBA in Operations Management from LUMS, M.Sc. in Physics from GC University Lahore, Basic Air Traffic Control Course, Aviation Policy, Civil Aviation management and Public Policy Program from renowned institutions in Singapore and South Korea.</p>
+                        <p>Committed to advancing Airport Operations through innovation, efficiency, and continuous improvement, while fostering a culture of safety, service excellence, and sustainable growth.</p>
+                    </div>
                     
                     <blockquote class="yellow-quote">
                         "What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others."
@@ -259,10 +274,12 @@
 
         </div>
 
+        <!-- 2. Expandable Sub-Section Layout (Education Records) -->
         <div id="detailedProfileSection" class="detailed-profile-section">
             <div class="educational-qualifications-container">
                 <div class="section-title">Educational Qualifications</div>
                 
+                <!-- Qualification Item 1 -->
                 <div class="qualification-card">
                     <div class="degree-details">
                         <h4>Master of Business Administration (MBA)</h4>
@@ -271,6 +288,7 @@
                     <div class="degree-year">2010 - 2012</div>
                 </div>
 
+                <!-- Qualification Item 2 -->
                 <div class="qualification-card">
                     <div class="degree-details">
                         <h4>M.Sc. in Physics</h4>
@@ -279,6 +297,7 @@
                     <div class="degree-year">Before 2010</div>
                 </div>
 
+                <!-- Qualification Item 3 -->
                 <div class="qualification-card">
                     <div class="degree-details">
                         <h4>Basic Air Traffic Control Course &amp; Public Policy Programs</h4>
@@ -289,6 +308,7 @@
             </div>
         </div>
 
+        <!-- 3. Dynamic Interactive Button Component -->
         <div class="action-button-area">
             <button id="toggleProfileBtn" class="toggle-layout-btn" onclick="handleProfileToggle()">
                 Click to view Detailed Profile
@@ -297,18 +317,20 @@
 
     </div>
 
+    <!-- Outer Page Section (Lectures Delivered) -->
     <div class="lectures-section">
         <h3>Lectures Delivered</h3>
-        </div>
+        <!-- Additional records modules populate here -->
+    </div>
 
 </div>
 
+<!-- Logic Implementation Script -->
 <script>
     function handleProfileToggle() {
         const targetSection = document.getElementById('detailedProfileSection');
         const actionBtn = document.getElementById('toggleProfileBtn');
         
-        // Checking current computed state logic
         if (targetSection.style.display === 'none' || targetSection.style.display === '') {
             targetSection.style.display = 'block';
             actionBtn.innerText = 'Hide Detailed Profile';
