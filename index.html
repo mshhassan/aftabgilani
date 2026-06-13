@@ -154,18 +154,6 @@
             transform: scale(1.05);
         }
 
-        .gallery-pill {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            background: rgba(15, 23, 42, 0.75);
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            backdrop-filter: blur(2px);
-        }
-
         .intro-actions {
             margin-top: 20px;
         }
@@ -255,22 +243,6 @@
             font-size: 1.5rem;
             color: var(--text-dark);
             font-weight: 700;
-        }
-
-        .category-heading {
-            margin: 35px 0 20px 0;
-            position: relative;
-        }
-
-        .category-title {
-            font-size: 1.15rem;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: var(--bg-main);
-            display: inline-block;
-            padding-right: 15px;
         }
 
         .timeline-wrapper {
@@ -450,8 +422,8 @@
                             <div class="training-date edu-year">2015</div>
                         </div>
                         <div class="edu-images">
-                            <div class="gallery-card"><img src="CivilAviationManagementProgramSingapore.jpg" alt="Singapore 1" loading="lazy" decoding="async"></div>
-                            <div class="gallery-card"><img src="SingaporeCivilAviationManagement.jpg" alt="Singapore 2" loading="lazy" decoding="async"></div>
+                            <div class="gallery-card"><img src="CivilAviationManagementProgramSingapore.jpg" alt="Singapore 1" loading="lazy"></div>
+                            <div class="gallery-card"><img src="SingaporeCivilAviationManagement.jpg" alt="Singapore 2" loading="lazy"></div>
                         </div>
                     </div>
 
@@ -464,8 +436,8 @@
                             <div class="training-date edu-year">2017 - 2018</div>
                         </div>
                         <div class="edu-images">
-                            <div class="gallery-card"><img src="(LKYSPP).png" alt="LKYSPP 1" loading="lazy" decoding="async"></div>
-                            <div class="gallery-card"><img src="(LKYSPP)1.jpg" alt="LKYSPP 2" loading="lazy" decoding="async"></div>
+                            <div class="gallery-card"><img src="(LKYSPP).png" alt="LKYSPP 1" loading="lazy"></div>
+                            <div class="gallery-card"><img src="(LKYSPP)1.jpg" alt="LKYSPP 2" loading="lazy"></div>
                         </div>
                     </div>
                 </div>
@@ -476,7 +448,7 @@
             </div>
 
             <div class="intro-actions">
-                <button id="showMoreBtn" class="btn btn-primary quote-box-btn">Click to view Detailed Profile</button>
+                <button id="showMoreBtn" class="btn btn-primary">Click to view Detailed Profile</button>
             </div>
         </section>
 
@@ -535,7 +507,9 @@
                 trainingData = deduplicateTrainingRecords((data.records || []).map(normalizeTrainingRecord));
             } catch (error) {
                 console.error(error);
-                trainingData = getDefaultTrainingData().map(normalizeTrainingRecord);
+                if (typeof getDefaultTrainingData === 'function') {
+                    trainingData = getDefaultTrainingData().map(normalizeTrainingRecord);
+                }
             }
         }
 
@@ -574,7 +548,7 @@
                 return true;
             } catch (error) {
                 console.error(error);
-                if (fallbackToDefaults) {
+                if (fallbackToDefaults && typeof getDefaultTrainingData === 'function') {
                     trainingData = getDefaultTrainingData().map(normalizeTrainingRecord);
                     trainingDataSignature = getTrainingDataSignature(trainingData);
                     filteredData = [...trainingData];
@@ -617,15 +591,9 @@
         }
 
         function dateSpecificity(dateString) {
-            if (dateString === '2000') {
-                return 0;
-            }
-            if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-                return 3;
-            }
-            if (/^\d{4}$/.test(dateString)) {
-                return 2;
-            }
+            if (dateString === '2000') return 0;
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return 3;
+            if (/^\d{4}$/.test(dateString)) return 2;
             return 1;
         }
 
@@ -641,7 +609,6 @@
             if (candidateImages !== currentImages) {
                 return candidateImages > currentImages ? candidate : current;
             }
-
             return candidate;
         }
 
@@ -662,42 +629,6 @@
             return orderedKeys.map(key => merged.get(key));
         }
 
-        function mergeTrainingRecords(defaultRecords, savedRecords) {
-            const savedByExactKey = new Map(savedRecords.map(record => [getRecordKey(record), record]));
-            const defaultSemanticKeys = new Set(defaultRecords.map(getSemanticRecordKey));
-
-            const merged = defaultRecords.map(defaultRecord => {
-                const exactKey = getRecordKey(defaultRecord);
-                if (savedByExactKey.has(exactKey)) {
-                    const savedRecord = savedByExactKey.get(exactKey);
-                    const mergedRecord = {
-                        ...defaultRecord,
-                        ...savedRecord,
-                        images: Array.isArray(savedRecord.images) && savedRecord.images.length
-                            ? savedRecord.images
-                            : defaultRecord.images || []
-                    };
-                    return mergedRecord;
-                }
-
-                const semanticMatch = savedRecords.find(record =>
-                    getSemanticRecordKey(record) === getSemanticRecordKey(defaultRecord)
-                );
-
-                return semanticMatch
-                    ? pickPreferredRecord(defaultRecord, semanticMatch)
-                    : defaultRecord;
-            });
-
-            savedRecords.forEach(record => {
-                if (!defaultSemanticKeys.has(getSemanticRecordKey(record))) {
-                    merged.push(record);
-                }
-            });
-
-            return deduplicateTrainingRecords(merged);
-        }
-
         const searchInput = document.getElementById('searchInput');
         const categoryFilter = document.getElementById('categoryFilter');
         const typeFilter = document.getElementById('typeFilter');
@@ -705,17 +636,108 @@
         const noResultsMessage = document.getElementById('noResultsMessage');
         const loadMoreTrigger = document.getElementById('loadMoreTrigger');
 
-        let filteredData = [...trainingData];
+        let filteredData = [];
         let visibleRecordLimit = 12;
         const recordBatchSize = 12;
         let isLoadingMore = false;
 
-        async function init() {
-            await refreshTrainingData({ fallbackToDefaults: true });
-            trainingData.forEach(item => { if (!item.type) item.type = 'Seminar'; });
-            attachEventListeners();
-            setupShowMoreToggle();
-            setupLiveDataRefresh();
+        function populateCategoryOptions() {
+            const categories = [...new Set(trainingData.map(item => item.category).filter(Boolean))].sort();
+            categoryFilter.innerHTML = '<option value="">All Categories</option>';
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                categoryFilter.appendChild(option);
+            });
+        }
+
+        function filterAndRender() {
+            const searchVal = searchInput.value.toLowerCase().trim();
+            const selectedCat = categoryFilter.value;
+            const selectedType = typeFilter.value;
+
+            filteredData = trainingData.filter(item => {
+                const matchesSearch = !searchVal || 
+                    item.title.toLowerCase().includes(searchVal) || 
+                    item.provider.toLowerCase().includes(searchVal) || 
+                    (item.description && item.description.toLowerCase().includes(searchVal));
+                const matchesCat = !selectedCat || item.category === selectedCat;
+                const matchesType = !selectedType || item.type === selectedType;
+                
+                return matchesSearch && matchesCat && matchesType;
+            });
+
+            visibleRecordLimit = recordBatchSize;
+            renderRecords(false);
+        }
+
+        function renderRecords(append = false) {
+            if (!append) {
+                recordsContainer.innerHTML = '';
+            }
+
+            const currentLength = recordsContainer.children.length;
+            const itemsToRender = filteredData.slice(
+                append ? currentLength : 0, 
+                visibleRecordLimit
+            );
+
+            if (filteredData.length === 0) {
+                noResultsMessage.style.display = 'block';
+                return;
+            } else {
+                noResultsMessage.style.display = 'none';
+            }
+
+            itemsToRender.forEach(item => {
+                const isAchievement = item.type === 'Achievement';
+                const cardHtml = `
+                    <div class="timeline-item">
+                        <div class="timeline-marker"><div class="marker-dot"></div></div>
+                        <div class="timeline-card ${isAchievement ? 'achievement-highlight' : ''}">
+                            ${isAchievement ? '<span class="badge-achievement">🏆 Highlighted Achievement</span>' : ''}
+                            <div class="training-top">
+                                <div>
+                                    <h3>${item.title}</h3>
+                                    <div class="provider">${item.provider}</div>
+                                </div>
+                                <div class="training-date">${item.date}</div>
+                            </div>
+                            <p class="training-description">${item.description || ''}</p>
+                            ${item.images && item.images.length ? `
+                                <div class="gallery-grid">
+                                    ${item.images.map(img => `
+                                        <div class="gallery-card">
+                                            <img src="${img}" alt="Artifact" loading="lazy">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                recordsContainer.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function setupShowMoreToggle() {
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            const hideProfileBtn = document.getElementById('hideProfileBtn');
+            const profileSection = document.getElementById('profileSection');
+
+            if (showMoreBtn && profileSection) {
+                showMoreBtn.addEventListener('click', () => {
+                    profileSection.style.display = 'block';
+                    showMoreBtn.style.display = 'none';
+                });
+            }
+            if (hideProfileBtn && profileSection) {
+                hideProfileBtn.addEventListener('click', () => {
+                    profileSection.style.display = 'none';
+                    showMoreBtn.style.display = 'inline-block';
+                });
+            }
         }
 
         function attachEventListeners() {
@@ -728,6 +750,35 @@
         function setupInfiniteScroll() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting && !isLoadingMore) {
-                        const typeOrder = { 'Seminar': 1, 'Achievement': 2, 'Certificate': 3 };
-                        const sortedData = [...filteredData].sort((a, b) => {
+                    if (entry.isIntersecting && !isLoadingMore && visibleRecordLimit < filteredData.length) {
+                        isLoadingMore = true;
+                        setTimeout(() => {
+                            visibleRecordLimit += recordBatchSize;
+                            renderRecords(true);
+                            isLoadingMore = false;
+                        }, 100);
+                    }
+                });
+            }, { rootMargin: '150px' });
+            
+            observer.observe(loadMoreTrigger);
+        }
+
+        function setupLiveDataRefresh() {
+            setInterval(() => {
+                refreshTrainingData();
+            }, 30000);
+        }
+
+        async function init() {
+            await refreshTrainingData({ fallbackToDefaults: true });
+            trainingData.forEach(item => { if (!item.type) item.type = 'Seminar'; });
+            attachEventListeners();
+            setupShowMoreToggle();
+            setupLiveDataRefresh();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
