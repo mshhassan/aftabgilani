@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Portfolio Dashboard</title>
+    <title>Professional Portfolio Dashboard - Syed Aftab Gilani</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,11 +28,78 @@
 
         .container { max-width: 1000px; margin: 0 auto; }
 
+        /* --- Main Hero Card Profile Layout (image_ec18db.jpg) --- */
+        .hero-section {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .profile-layout { grid-template-columns: 220px 1fr; }
+        }
+
+        .profile-img-container {
+            width: 220px;
+            height: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            background-color: #0f172a;
+        }
+
+        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        .hero-content h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: white;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: #93c5fd;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .bio-box {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 18px;
+            font-size: 0.95rem;
+            color: #f1f5f9;
+        }
+
+        .bio-box p { margin-bottom: 12px; }
+        .bio-box p:last-of-type { margin-bottom: 0; }
+
+        .quote-box {
+            font-style: italic;
+            color: #fde047;
+            font-size: 0.95rem;
+            border-left: 3px solid #fde047;
+            padding-left: 12px;
+            margin-top: 15px;
+        }
+
         /* Navigation Module Selector Tabs */
         .module-tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 2px solid var(--border);
             padding-bottom: 10px;
         }
@@ -155,7 +222,7 @@
 
         .portfolio-img-box {
             width: 100%;
-            aspect-ratio: 16 / 10; /* Perfectly uniform landscape rectangular shape */
+            aspect-ratio: 16 / 10;
             border-radius: 8px;
             overflow: hidden;
             background-color: #f1f5f9;
@@ -165,9 +232,20 @@
         .portfolio-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Fits cleanly inside container without distorting */
+            object-fit: cover;
             display: block;
         }
+
+        /* Permanent Profile View Elements */
+        .profile-summary-details {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+        }
+        .profile-summary-details h3 { margin-bottom: 15px; color: var(--text-dark); }
+        .profile-summary-details ul { padding-left: 20px; margin-bottom: 20px; color: var(--text-main); }
+        .profile-summary-details ul li { margin-bottom: 8px; }
 
         /* --- WYSIWYG HIGH FIDELITY PDF PRINT PRESS FORMATTING --- */
         @media print {
@@ -177,8 +255,20 @@
                 padding: 0 !important;
             }
             .module-tabs, .filter-panel {
-                display: none !important; /* Hide web controls on print */
+                display: none !important;
             }
+            .hero-section {
+                background: #1e3a8a !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                margin-bottom: 20px !important;
+            }
+            .bio-box {
+                background: rgba(255, 255, 255, 0.1) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            }
+            .quote-box { color: #eab308 !important; }
             .container {
                 max-width: 100% !important;
                 width: 100% !important;
@@ -188,7 +278,7 @@
                 border-bottom: 1px solid #cbd5e1 !important;
                 border-radius: 0 !important;
                 padding: 15px 0 !important;
-                page-break-inside: avoid; /* Prevents card splitting across pages */
+                page-break-inside: avoid;
             }
             .category-header {
                 background-color: #f1f5f9 !important;
@@ -196,12 +286,8 @@
                 border: 1px solid #cbd5e1 !important;
                 page-break-after: avoid;
             }
-            .row-header .side-date {
-                color: black !important;
-            }
-            .sub-meta {
-                color: #c2410c !important;
-            }
+            .row-header .side-date { color: black !important; }
+            .sub-meta { color: #c2410c !important; }
             .portfolio-img-box {
                 border: 1px solid #94a3b8 !important;
                 page-break-inside: avoid;
@@ -212,8 +298,33 @@
 <body>
 
     <div class="container">
+        
+        <!-- ================= PERMANENT PROFILE SUMMARY CARD (image_ec18db.jpg) ================= -->
+        <section class="hero-section">
+            <div class="profile-layout">
+                <div class="profile-img-container">
+                    <img src="profile.jpg" alt="Syed Aftab Gilani" onerror="this.src='https://via.placeholder.com/220x250?text=Profile+Image'">
+                </div>
+                <div class="hero-content">
+                    <h1>Syed Aftab Gilani</h1>
+                    <div class="hero-subtitle">COO/Airport Manager, Islamabad International Airport</div>
+                    
+                    <div class="bio-box">
+                        <p>MBA in Operations Management from LUMS, M.Sc. in Physics from GC University Lahore, Basic Air Traffic Control Course, Aviation Policy, Civil Aviation management and Public Policy Program from renowned institutions in Singapore and South Korea.</p>
+                        <p>Committed to advancing Airport Operations through innovation, efficiency, and continuous improvement, while fostering a culture of safety, service excellence, and sustainable growth.</p>
+                        
+                        <div class="quote-box">
+                            "What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Central Module Selector Tabs -->
         <nav class="module-tabs" id="moduleTabs"></nav>
 
+        <!-- Search and Context Dynamic Filters -->
         <section class="filter-panel" id="filterPanel">
             <div class="filter-group">
                 <label>Keyword Search</label>
@@ -227,12 +338,14 @@
             </div>
         </section>
 
+        <!-- Dynamic Output Viewport Container -->
         <main>
             <h2 class="section-banner" id="sectionTitle">Load Module</h2>
             <div id="renderViewport"></div>
         </main>
     </div>
 
+    <!-- SCRIPT DEJECTIONS LINKING DATA CONFIGURATIONS -->
     <script src="config.js"></script>
     <script src="educationData.js"></script>
     <script src="trainingData.js"></script>
@@ -241,7 +354,22 @@
     <script>
         let currentModuleId = PortfolioConfig.sections[0].id;
 
+        // Static Data fallback for Profile Summary itself
+        const profileData = [
+            {
+                topic: "Executive Executive Core Competencies",
+                date: "Active",
+                description: "Over the course of an illustrious career managing strategic aviation hubs, key expertise domains include Air Traffic Management, Strategic Infrastructure Planning, Airport Resource Optimization, and Airport Collaborative Decision Making (A-CDM)."
+            },
+            {
+                topic: "International Representations & Delegations",
+                date: "Continuous",
+                description: "Represented national interests and civil aviation frameworks across bilateral infrastructure asset assignments and international working groups in Singapore, South Korea, and global forums."
+            }
+        ];
+
         function getActiveDataset() {
+            if (currentModuleId === "profile") return profileData;
             const section = PortfolioConfig.sections.find(s => s.id === currentModuleId);
             return window[section.dataRef] || [];
         }
@@ -249,7 +377,7 @@
         function buildNavigation() {
             const tabsContainer = document.getElementById('moduleTabs');
             tabsContainer.innerHTML = '';
-            PortfolioConfig.sections.forEach((sec, idx) => {
+            PortfolioConfig.sections.forEach((sec) => {
                 const btn = document.createElement('button');
                 btn.className = `tab-btn ${sec.id === currentModuleId ? 'active' : ''}`;
                 btn.textContent = sec.title;
@@ -262,7 +390,15 @@
             currentModuleId = moduleId;
             buildNavigation();
             document.getElementById('keywordSearch').value = '';
-            repopulateFilters();
+            
+            // Hide/Show dynamic search parameters panel depending on context
+            const filterPanel = document.getElementById('filterPanel');
+            if (currentModuleId === "profile") {
+                filterPanel.style.display = 'none';
+            } else {
+                filterPanel.style.display = 'grid';
+                repopulateFilters();
+            }
             renderEngine();
         }
 
@@ -271,7 +407,6 @@
             const wrapper = document.getElementById('catFilterWrapper');
             const select = document.getElementById('dynamicCatFilter');
             
-            // Check if active data model has a category attribute (e.g., training)
             const standardHasCategory = data.some(item => item.category);
             
             if (!standardHasCategory) {
@@ -285,7 +420,7 @@
             
             const categories = [...new Set(data.map(item => item.category).filter(Boolean))].sort();
             categories.forEach(cat => {
-                const opt = document.createElement('option');
+                const opt = document.createElement('opt');
                 opt.value = cat;
                 opt.textContent = cat;
                 select.appendChild(opt);
@@ -300,10 +435,8 @@
             const searchVal = document.getElementById('keywordSearch').value.toLowerCase().trim();
             const selectCat = document.getElementById('dynamicCatFilter').value;
 
-            // Filtration Processing Execution Loop
             const filtered = data.filter(item => {
                 const matchCat = !selectCat || item.category === selectCat;
-                
                 const txtTitle = (item.topic || '').toLowerCase();
                 const txtSub = (item.university || item.provider || item.authority || '').toLowerCase();
                 const txtDesc = (item.description || '').toLowerCase();
@@ -320,7 +453,6 @@
                 return;
             }
 
-            // Bucket Processing (Group by category if available, else group linearly)
             const buckets = {};
             filtered.forEach(item => {
                 const key = item.category || "General";
@@ -342,7 +474,6 @@
                 buckets[bucketName].forEach(item => {
                     const subMetaContent = item.university || item.location || item.authority || '';
                     
-                    // Pictures processing grid generator
                     let imagesGridHtml = '';
                     if (item.images && item.images.length > 0) {
                         imagesGridHtml = `<div class="image-container-grid">`;
@@ -376,7 +507,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             buildNavigation();
-            repopulateFilters();
+            // Start directly on Profile Summary page
+            const filterPanel = document.getElementById('filterPanel');
+            filterPanel.style.display = 'none';
             renderEngine();
 
             document.getElementById('keywordSearch').addEventListener('input', renderEngine);
