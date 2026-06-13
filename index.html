@@ -1,593 +1,387 @@
-Bhai, woh text is liye likha aa raha tha kyunke code mein condition lagi hui thi ke agar training ki type `"Achievement"` hogi, toh woh automatic us badge ko top par show karega.
-
-Maine aapki requirement ke mutabiq isko completely remove kar diya hai. Ab kisi bhi record par yeh badge ya text show nahi hoga.
-
-Aap apni **`index.html`** file ko is pure clean code se replace kar lijiye, aapka issue solve ho jayega:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Training Portfolio - Syed Aftab Gilani</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Professional Portfolio Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1e3a8a;
-            --primary-dark: #172554;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --bg-main: #f1f5f9;
+            --bg-main: #f8fafc;
             --bg-card: #ffffff;
-            --border: #cbd5e1;
-            --text-main: #334155;
             --text-dark: #0f172a;
+            --text-main: #334155;
             --text-muted: #64748b;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            --radius: 16px;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+            --radius: 12px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
-            line-height: 1.6;
-            padding: 20px;
+            padding: 40px 20px;
+            line-height: 1.5;
         }
 
-        .portfolio-container {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding-bottom: 60px;
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        /* Navigation Module Selector Tabs */
+        .module-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
         }
 
-        /* Top Toolbar Search Section */
-        .toolbar-filter-section {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 15px 25px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
-            display: grid;
-            grid-template-columns: 2fr 1.2fr 1fr auto;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .filter-group { display: flex; flex-direction: column; }
-        .filter-group label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--text-muted);
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            background-color: #f8fafc;
+            cursor: pointer;
             transition: all 0.2s ease;
+            border-radius: 6px;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--accent);
-            background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .btn-search-go {
+        .tab-btn.active {
             background-color: var(--accent);
             color: white;
-            border: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 18px;
-            transition: background-color 0.2s;
         }
 
-        .btn-search-go:hover { background-color: var(--accent-hover); }
-
-        /* Main Hero Card Profile Layout */
-        .hero-section {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            color: white;
+        /* Filter Controls */
+        .filter-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 35px;
-            margin-bottom: 35px;
-            box-shadow: var(--shadow);
-        }
-
-        .profile-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-
-        @media (min-width: 768px) {
-            .profile-layout { grid-template-columns: 220px 1fr; }
-        }
-
-        .profile-img-container {
-            width: 220px;
-            height: 250px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 4px solid rgba(255, 255, 255, 0.15);
-            box-shadow: var(--shadow);
-            background-color: #0f172a;
-        }
-
-        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-        .hero-content h1 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: white;
-        }
-
-        .hero-subtitle {
-            font-size: 1.05rem;
-            color: #93c5fd;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .bio-box {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            color: #f1f5f9;
-        }
-
-        .quote-box {
-            font-style: italic;
-            color: #fde047;
-            font-size: 0.95rem;
-            border-left: 3px solid #fde047;
-            padding-left: 12px;
-            margin-top: 15px;
-        }
-
-        .action-container { margin-top: 25px; }
-
-        .btn-block-action {
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-align: center;
-        }
-
-        .btn-block-action:hover { background-color: #1d4ed8; }
-
-        /* Toggleable Panel for Education */
-        #profileSection {
-            display: none;
-            margin-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            padding-top: 25px;
-        }
-
-        .education-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .education-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        .education-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
             padding: 20px;
-        }
-
-        .education-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            margin-bottom: 15px;
         }
 
-        .education-top h4 { font-size: 1.05rem; color: white; font-weight: 600; }
-        .edu-caption { font-size: 0.85rem; color: #cbd5e1; margin-top: 4px; }
-        .edu-year {
-            font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: white;
-            font-weight: 600;
-        }
-
-        .edu-images { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-        .gallery-card {
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+        .form-control {
+            padding: 10px;
+            border: 1px solid var(--border);
             border-radius: 6px;
-            overflow: hidden;
-            aspect-ratio: 16/10;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: inherit;
+            color: var(--text-dark);
+            background-color: #f8fafc;
         }
-        .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Timeline UI Sections */
-        .timeline-section { margin-top: 10px; }
-        .section-header { margin-bottom: 25px; }
-        .section-header h2 { font-size: 1.4rem; color: var(--text-dark); font-weight: 700; }
-        .category-group-wrapper { margin-bottom: 35px; }
-        
-        .category-title-banner {
-            background-color: #dbeafe;
+        /* Dynamic Section Content Renderer */
+        .section-banner {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent);
+            padding-left: 12px;
+        }
+
+        .category-block { margin-bottom: 35px; }
+        .category-header {
+            background-color: #eff6ff;
             color: #1e40af;
             font-size: 0.95rem;
             font-weight: 700;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 10px 15px;
+            border-radius: 6px;
             margin-bottom: 20px;
         }
 
-        .timeline-wrapper {
-            position: relative;
-            padding-left: 25px;
-        }
-
-        .timeline-wrapper::before {
-            content: '';
-            position: absolute;
-            left: 6px;
-            top: 10px;
-            bottom: 10px;
-            width: 2px;
-            background-color: #cbd5e1;
-        }
-
-        .timeline-item { position: relative; margin-bottom: 20px; }
-        .timeline-marker {
-            position: absolute;
-            left: -25px;
-            top: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .marker-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: #3b82f6;
-            border: 3px solid var(--bg-main);
-        }
-
-        .timeline-card {
+        /* Portfolio Structure Records Card Layout */
+        .record-card {
             background: var(--bg-card);
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .training-top {
+        /* Extreme Right Row Alignment Configuration */
+        .row-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .training-top h3 { font-size: 1.1rem; color: var(--text-dark); font-weight: 700; }
-        .provider { font-size: 0.9rem; color: #f97316; font-weight: 500; margin-top: 2px; }
-        .training-date { font-size: 0.85rem; color: #1e3a8a; font-weight: 600; white-space: nowrap; }
-        .training-description { font-size: 0.95rem; color: var(--text-main); }
+        .row-header .main-topic {
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            flex: 1;
+        }
 
-        .gallery-grid {
+        .row-header .side-date {
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .sub-meta {
+            font-size: 0.9rem;
+            color: #f97316;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .description-text {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        /* Standardized Uniform Container Shapes for Pictures */
+        .image-container-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 12px;
             margin-top: 15px;
         }
 
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            background: var(--bg-card);
+        .portfolio-img-box {
+            width: 100%;
+            aspect-ratio: 16 / 10; /* Perfectly uniform landscape rectangular shape */
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f1f5f9;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--text-muted);
         }
 
-        .footer-credit { margin-top: 50px; text-align: center; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+        .portfolio-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Fits cleanly inside container without distorting */
+            display: block;
+        }
 
-        @media (max-width: 767px) {
-            .toolbar-filter-section { grid-template-columns: 1fr; }
-            .btn-search-go { margin-top: 0; width: 100%; }
-            .training-top { flex-direction: column; gap: 5px; }
-            .training-date { align-self: flex-start; }
+        /* --- WYSIWYG HIGH FIDELITY PDF PRINT PRESS FORMATTING --- */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+            }
+            .module-tabs, .filter-panel {
+                display: none !important; /* Hide web controls on print */
+            }
+            .container {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .record-card {
+                border: none !important;
+                border-bottom: 1px solid #cbd5e1 !important;
+                border-radius: 0 !important;
+                padding: 15px 0 !important;
+                page-break-inside: avoid; /* Prevents card splitting across pages */
+            }
+            .category-header {
+                background-color: #f1f5f9 !important;
+                color: black !important;
+                border: 1px solid #cbd5e1 !important;
+                page-break-after: avoid;
+            }
+            .row-header .side-date {
+                color: black !important;
+            }
+            .sub-meta {
+                color: #c2410c !important;
+            }
+            .portfolio-img-box {
+                border: 1px solid #94a3b8 !important;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="portfolio-container">
-        
-        <!-- Search Toolbar Section -->
-        <section class="toolbar-filter-section">
+    <div class="container">
+        <nav class="module-tabs" id="moduleTabs"></nav>
+
+        <section class="filter-panel" id="filterPanel">
             <div class="filter-group">
-                <label for="searchInput">Search Training Record</label>
-                <input type="text" id="searchInput" class="form-control" placeholder="Search title, category, provider...">
+                <label>Keyword Search</label>
+                <input type="text" id="keywordSearch" class="form-control" placeholder="Search records...">
             </div>
-            <div class="filter-group">
-                <label for="categoryFilter">Category Filter</label>
-                <select id="categoryFilter" class="form-control">
+            <div class="filter-group" id="catFilterWrapper">
+                <label>Category Filter</label>
+                <select id="dynamicCatFilter" class="form-control">
                     <option value="">All Categories</option>
                 </select>
             </div>
-            <div class="filter-group">
-                <label for="typeFilter">Type Filter</label>
-                <select id="typeFilter" class="form-control">
-                    <option value="">All Types</option>
-                    <option value="Seminar">Seminars</option>
-                    <option value="Achievement">Achievements</option>
-                    <option value="Certificate">Certificates</option>
-                </select>
-            </div>
-            <div>
-                <button id="searchGoBtn" class="btn-search-go" title="Search">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </button>
-            </div>
         </section>
 
-        <!-- Profile Section Banner -->
-        <section class="hero-section">
-            <div class="profile-layout">
-                <div class="profile-img-container">
-                    <img src="profile.jpg" alt="Syed Aftab Gilani" onerror="this.src='https://via.placeholder.com/220x250?text=Profile+Image'">
-                </div>
-                <div>
-                    <h1>Syed Aftab Gilani</h1>
-                    <div class="hero-subtitle">COO/Airport Manager, Islamabad International Airport</div>
-                    
-                    <div class="bio-box">
-                        <p>MBA in Operations Management from LUMS, M.Sc. in Physics from GC University Lahore, Basic Air Traffic Control Course, Aviation Policy, Civil Aviation management and Public Policy Program from renowned institutions in Singapore and South Korea.</p>
-                        <p>Committed to advancing Airport Operations through innovation, efficiency, and continuous improvement, while fostering a culture of safety, service excellence, and sustainable growth.</p>
-                        
-                        <div class="quote-box">
-                            "What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others."
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Toggleable Panel for Education -->
-            <div id="profileSection">
-                <div class="education-grid">
-                    <div class="education-card">
-                        <div class="education-top">
-                            <div>
-                                <h4>4. Civil Aviation Management Program</h4>
-                                <div class="edu-caption">Singapore</div>
-                            </div>
-                            <div class="edu-year">2015</div>
-                        </div>
-                        <div class="edu-images">
-                            <div class="gallery-card"><img src="CivilAviationManagementProgramSingapore.jpg" alt="Singapore 1" onerror="this.style.display='none'"></div>
-                            <div class="gallery-card"><img src="SingaporeCivilAviationManagement.jpg" alt="Singapore 2" onerror="this.style.display='none'"></div>
-                        </div>
-                    </div>
-
-                    <div class="education-card">
-                        <div class="education-top">
-                            <div>
-                                <h4>5. Public Policy Program</h4>
-                                <div class="edu-caption">Lee Kuan Yew School of Public Policy (LKYSPP), National University of Singapore</div>
-                            </div>
-                            <div class="edu-year">2017 - 2018</div>
-                        </div>
-                        <div class="edu-images">
-                            <div class="gallery-card"><img src="(LKYSPP).png" alt="LKYSPP 1" onerror="this.style.display='none'"></div>
-                            <div class="gallery-card"><img src="(LKYSPP)1.jpg" alt="LKYSPP 2" onerror="this.style.display='none'"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; text-align: right;">
-                    <button id="hideProfileBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:white; padding:6px 14px; border-radius:6px; cursor:pointer;">Hide Details</button>
-                </div>
-            </div>
-
-            <div class="action-container">
-                <button id="showMoreBtn" class="btn-block-action">Click to view Detailed Profile</button>
-            </div>
-        </section>
-
-        <!-- Lectures Main Output Container -->
-        <section class="timeline-section">
-            <div class="section-header">
-                <h2>Lectures Delivered</h2>
-            </div>
-            
-            <div id="recordsContainer"></div>
-            
-            <div class="no-results" id="noResultsMessage" style="display:none;">
-                <strong>No matching records found.</strong>
-                Try adjusting your search filters.
-            </div>
-        </section>
-
-        <div class="footer-credit">Syed Aftab Gilani</div>
+        <main>
+            <h2 class="section-banner" id="sectionTitle">Load Module</h2>
+            <div id="renderViewport"></div>
+        </main>
     </div>
 
-    <!-- LINKING YOUR EXTERNAL DATA FILE HERE -->
-    <script src="data.js"></script>
+    <script src="config.js"></script>
+    <script src="educationData.js"></script>
+    <script src="trainingData.js"></script>
+    <script src="achievementData.js"></script>
 
     <script>
-        const trainingData = typeof staticTrainingData !== 'undefined' ? staticTrainingData : [];
+        let currentModuleId = PortfolioConfig.sections[0].id;
 
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const typeFilter = document.getElementById('typeFilter');
-        const recordsContainer = document.getElementById('recordsContainer');
-        const noResultsMessage = document.getElementById('noResultsMessage');
-        const showMoreBtn = document.getElementById('showMoreBtn');
-        const hideProfileBtn = document.getElementById('hideProfileBtn');
-        const profileSection = document.getElementById('profileSection');
-        const searchGoBtn = document.getElementById('searchGoBtn');
+        function getActiveDataset() {
+            const section = PortfolioConfig.sections.find(s => s.id === currentModuleId);
+            return window[section.dataRef] || [];
+        }
 
-        function populateCategories() {
-            const categories = [...new Set(trainingData.map(item => item.category).filter(Boolean))].sort();
-            categories.forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat;
-                option.textContent = cat;
-                categoryFilter.appendChild(option);
+        function buildNavigation() {
+            const tabsContainer = document.getElementById('moduleTabs');
+            tabsContainer.innerHTML = '';
+            PortfolioConfig.sections.forEach((sec, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${sec.id === currentModuleId ? 'active' : ''}`;
+                btn.textContent = sec.title;
+                btn.onclick = () => switchModule(sec.id);
+                tabsContainer.appendChild(btn);
             });
         }
 
-        function filterAndRenderUI() {
-            const searchVal = searchInput.value.toLowerCase().trim();
-            const selectedCat = categoryFilter.value;
-            const selectedType = typeFilter.value;
+        function switchModule(moduleId) {
+            currentModuleId = moduleId;
+            buildNavigation();
+            document.getElementById('keywordSearch').value = '';
+            repopulateFilters();
+            renderEngine();
+        }
 
-            const filtered = trainingData.filter(item => {
-                const titleMatch = item.showFields.title && item.title.toLowerCase().includes(searchVal);
-                const providerMatch = item.showFields.provider && item.provider.toLowerCase().includes(searchVal);
-                const generalMatch = item.category.toLowerCase().includes(searchVal) || (item.description && item.description.toLowerCase().includes(searchVal));
+        function repopulateFilters() {
+            const data = getActiveDataset();
+            const wrapper = document.getElementById('catFilterWrapper');
+            const select = document.getElementById('dynamicCatFilter');
+            
+            // Check if active data model has a category attribute (e.g., training)
+            const standardHasCategory = data.some(item => item.category);
+            
+            if (!standardHasCategory) {
+                wrapper.style.display = 'none';
+                select.value = '';
+                return;
+            }
+            
+            wrapper.style.display = 'flex';
+            select.innerHTML = '<option value="">All Categories</option>';
+            
+            const categories = [...new Set(data.map(item => item.category).filter(Boolean))].sort();
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                select.appendChild(opt);
+            });
+        }
+
+        function renderEngine() {
+            const data = getActiveDataset();
+            const activeSectionMeta = PortfolioConfig.sections.find(s => s.id === currentModuleId);
+            document.getElementById('sectionTitle').textContent = activeSectionMeta.title;
+
+            const searchVal = document.getElementById('keywordSearch').value.toLowerCase().trim();
+            const selectCat = document.getElementById('dynamicCatFilter').value;
+
+            // Filtration Processing Execution Loop
+            const filtered = data.filter(item => {
+                const matchCat = !selectCat || item.category === selectCat;
                 
-                const matchesSearch = !searchVal || titleMatch || providerMatch || generalMatch;
-                const matchesCat = !selectedCat || item.category === selectedCat;
-                const matchesType = !selectedType || item.type === selectedType;
-                
-                return matchesSearch && matchesCat && matchesType;
+                const txtTitle = (item.topic || '').toLowerCase();
+                const txtSub = (item.university || item.provider || item.authority || '').toLowerCase();
+                const txtDesc = (item.description || '').toLowerCase();
+                const matchSearch = !searchVal || txtTitle.includes(searchVal) || txtSub.includes(searchVal) || txtDesc.includes(searchVal);
+
+                return matchCat && matchSearch;
             });
 
-            recordsContainer.innerHTML = '';
+            const viewport = document.getElementById('renderViewport');
+            viewport.innerHTML = '';
 
             if (filtered.length === 0) {
-                noResultsMessage.style.display = 'block';
+                viewport.innerHTML = '<div style="padding:40px; text-align:center; color:#64748b;">No items match selected filters.</div>';
                 return;
-            } else {
-                noResultsMessage.style.display = 'none';
             }
 
-            const groups = {};
+            // Bucket Processing (Group by category if available, else group linearly)
+            const buckets = {};
             filtered.forEach(item => {
-                const currentCatName = item.showFields.category ? item.category : "Other Recognitions";
-                if (!groups[currentCatName]) {
-                    groups[currentCatName] = [];
-                }
-                groups[currentCatName].push(item);
+                const key = item.category || "General";
+                if (!buckets[key]) buckets[key] = [];
+                buckets[key].push(item);
             });
 
-            for (const categoryName in groups) {
-                const groupWrapper = document.createElement('div');
-                groupWrapper.className = 'category-group-wrapper';
+            for (const bucketName in buckets) {
+                const block = document.createElement('div');
+                block.className = 'category-block';
 
-                if (categoryName !== "Other Recognitions") {
-                    const banner = document.createElement('div');
-                    banner.className = 'category-title-banner';
-                    banner.textContent = categoryName;
-                    groupWrapper.appendChild(banner);
+                if (bucketName !== "General") {
+                    const header = document.createElement('div');
+                    header.className = 'category-header';
+                    header.textContent = bucketName;
+                    block.appendChild(header);
                 }
 
-                const timelineWrapper = document.createElement('div');
-                timelineWrapper.className = 'timeline-wrapper';
-
-                groups[categoryName].forEach(item => {
-                    const sf = item.showFields;
-                    const folderPath = `training picture/${item.folderName}/`;
-
-                    let galleryHtml = '';
+                buckets[bucketName].forEach(item => {
+                    const subMetaContent = item.university || item.location || item.authority || '';
+                    
+                    // Pictures processing grid generator
+                    let imagesGridHtml = '';
                     if (item.images && item.images.length > 0) {
-                        galleryHtml = `<div class="gallery-grid">`;
-                        item.images.forEach(imgName => {
-                            galleryHtml += `
-                                <div class="gallery-card">
-                                    <img src="${folderPath}${imgName}" alt="Training Artifact">
-                                </div>
-                            `;
+                        imagesGridHtml = `<div class="image-container-grid">`;
+                        item.images.forEach(img => {
+                            const srcPath = `${item.baseFolder}/${item.subFolder}/${img}`;
+                            imagesGridHtml += `
+                                <div class="portfolio-img-box">
+                                    <img src="${srcPath}" alt="Portfolio Structural Asset" onerror="this.parentNode.style.display='none'">
+                                </div>`;
                         });
-                        galleryHtml += `</div>`;
+                        imagesGridHtml += `</div>`;
                     }
 
-                    const itemHtml = `
-                        <div class="timeline-item">
-                            <div class="timeline-marker"><div class="marker-dot"></div></div>
-                            <div class="timeline-card">
-                                <div class="training-top">
-                                    <div>
-                                        ${sf.title ? `<h3>${item.title}</h3>` : ''}
-                                        ${sf.provider ? `<div class="provider">${item.provider}</div>` : ''}
-                                    </div>
-                                    ${sf.date ? `<div class="training-date">${item.date}</div>` : ''}
-                                </div>
-                                ${item.description ? `<p class="training-description">${item.description}</p>` : ''}
-                                ${galleryHtml}
- Felt                    </div>
+                    const cardHtml = `
+                        <div class="record-card">
+                            <div class="row-header">
+                                <div class="main-topic">${item.topic}</div>
+                                <div class="side-date">${item.date}</div>
+                            </div>
+                            ${subMetaContent ? `<div class="sub-meta">${subMetaContent}</div>` : ''}
+                            ${item.description ? `<div class="description-text">${item.description}</div>` : ''}
+                            ${imagesGridHtml}
                         </div>
                     `;
-                    timelineWrapper.insertAdjacentHTML('beforeend', itemHtml);
+                    block.insertAdjacentHTML('beforeend', cardHtml);
                 });
 
-                groupWrapper.appendChild(timelineWrapper);
-                recordsContainer.appendChild(groupWrapper);
+                viewport.appendChild(block);
             }
         }
 
-        function initApp() {
-            populateCategories();
-            filterAndRenderUI();
+        document.addEventListener('DOMContentLoaded', () => {
+            buildNavigation();
+            repopulateFilters();
+            renderEngine();
 
-            searchInput.addEventListener('input', filterAndRenderUI);
-            categoryFilter.addEventListener('change', filterAndRenderUI);
-            typeFilter.addEventListener('change', filterAndRenderUI);
-            searchGoBtn.addEventListener('click', filterAndRenderUI);
-
-            showMoreBtn.addEventListener('click', () => {
-                profileSection.style.display = 'block';
-                showMoreBtn.style.display = 'none';
-            });
-
-            hideProfileBtn.addEventListener('click', () => {
-                profileSection.style.display = 'none';
-                showMoreBtn.style.display = 'block';
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', initApp);
+            document.getElementById('keywordSearch').addEventListener('input', renderEngine);
+            document.getElementById('dynamicCatFilter').addEventListener('change', renderEngine);
+        });
     </script>
 </body>
 </html>
-
-```
